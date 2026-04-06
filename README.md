@@ -485,7 +485,7 @@ MIT License — see [LICENSE](LICENSE).
 **GeoAfrica** is a product of **Merczcord Technologies Ltd.**, a technology company focused on building data infrastructure and geospatial intelligence tools for African communities and beyond.
 
 - 🌐 Website: [merczcord.com](https://merczcord.com)
-- 📧 Contact: dev@merczcord.com
+- 📧 Contact: info@merczcord.com
 - 🐙 GitHub: [github.com/Mercy14846/Geo-API](https://github.com/Mercy14846/Geo-API)
 
 ---
