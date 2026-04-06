@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+pip-wheel-metadata/
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# GeoAfrica cache
+.geoafrica/
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# MkDocs
+site/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets — never commit API keys
+.env
+.env.local
+secrets.toml
+
+# Data files (potentially large)
+*.tif
+*.tiff
+*.nc
+*.h5
+*.hdf
+*.parquet
+!tests/fixtures/*.tif
