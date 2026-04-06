@@ -45,8 +45,8 @@ import geoafrica
 | `geoafrica.elevation` | DEM — SRTM, Copernicus, AW3D30, NASADEM | OpenTopography |
 | `geoafrica.humanitarian` | Crisis, displacement, flood datasets | UN OCHA HDX |
 | `geoafrica.roads` | Road networks & density stats | OpenStreetMap |
-| `geoafrica.viz` | Interactive Folium maps, choropleths | — |
-| `geoafrica.analysis` | Clip, buffer, zonal stats, proximity | — |
+| `geoafrica.viz` | Interactive Folium maps, choropleths | - |
+| `geoafrica.analysis` | Clip, buffer, zonal stats, proximity | - |
 
 ---
 
