@@ -1,0 +1,66 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\173330\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\173330\OneDrive\Documents\Codeses\Geo-API
+configfile: pyproject.toml
+plugins: anyio-3.7.1, asyncio-1.3.0, cov-7.1.0, mock-3.15.1, zarr-3.1.5
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 4 items
+
+tests/test_elevation.py::test_list_sources PASSED                        [ 25%]
+tests/test_elevation.py::test_get_dem_calls_opentopo FAILED              [ 50%]
+tests/test_elevation.py::test_terrain_profile ERROR                      [ 75%]
+tests/test_elevation.py::test_compute_slope_aspect FAILED                [100%]
+
+=================================== ERRORS ====================================
+___________________ ERROR at setup of test_terrain_profile ____________________
+file C:\Users\173330\OneDrive\Documents\Codeses\Geo-API\tests\test_elevation.py, line 38
+  def test_terrain_profile(requests_mock):
+E       fixture 'requests_mock' not found
+>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, class_mocker, cov, doctest_namespace, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\173330\OneDrive\Documents\Codeses\Geo-API\tests\test_elevation.py:38
+================================== FAILURES ===================================
+_________________________ test_get_dem_calls_opentopo _________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.elevation' has no attribute 'GeoAfricaConfig'
+__________________________ test_compute_slope_aspect __________________________
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\common.py:334: in __setattr__
+    object.__setattr__(self, name, value)
+E   AttributeError: 'DataArray' object has no attribute 'rio'
+
+The above exception was the direct cause of the following exception:
+tests\test_elevation.py:71: in test_compute_slope_aspect
+    da.rio = MagicMock()
+    ^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\common.py:340: in __setattr__
+    raise AttributeError(
+E   AttributeError: cannot set attribute 'rio' on a 'DataArray' object. Use __setitem__ styleassignment (e.g., `ds['name'] = ...`) instead of assigning variables.
+============================== warnings summary ===============================
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60
+  C:\Users\173330\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.5' currently installed).
+    from pandas.core import (
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_elevation.py::test_get_dem_calls_opentopo - AttributeError:...
+FAILED tests/test_elevation.py::test_compute_slope_aspect - AttributeError: c...
+ERROR tests/test_elevation.py::test_terrain_profile
+=============== 2 failed, 1 passed, 1 warning, 1 error in 2.91s ===============
