@@ -7,4 +7,30 @@ plugins: anyio-3.7.1, asyncio-1.3.0, cov-7.1.0, mock-3.15.1, zarr-3.1.5
 asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
 collecting ... collected 3 items
 
-tests/test_health.py::test_get_facilities 
+tests/test_health.py::test_get_facilities FAILED                         [ 33%]
+tests/test_health.py::test_nearest_to FAILED                             [ 66%]
+tests/test_health.py::test_count_by_admin PASSED                         [100%]
+
+================================== FAILURES ===================================
+_____________________________ test_get_facilities _____________________________
+tests\test_health.py:31: in test_get_facilities
+    ???
+E   assert 0 == 1
+E    +  where 0 = len(Empty GeoDataFrame\nColumns: [geometry]\nIndex: [])
+_______________________________ test_nearest_to _______________________________
+tests\test_health.py:50: in test_nearest_to
+    crs="EPSG:4326"
+         ^^^^^^^^^^^
+src\geoafrica\datasets\health.py:120: in nearest_to
+    raise DataNotFoundError(
+E   geoafrica.core.exceptions.DataNotFoundError: No facilities found in 'Nigeria' to compute nearest.
+============================== warnings summary ===============================
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60
+  C:\Users\173330\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.5' currently installed).
+    from pandas.core import (
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_health.py::test_get_facilities - assert 0 == 1
+FAILED tests/test_health.py::test_nearest_to - geoafrica.core.exceptions.Data...
+============== 2 failed, 1 passed, 1 warning in 69.37s (0:01:09) ==============
