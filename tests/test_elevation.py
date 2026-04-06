@@ -16,7 +16,7 @@ def test_list_sources():
     assert "SRTMGL1" in df["code"].values
 
 
-@patch("geoafrica.datasets.elevation.GeoAfricaConfig.get_api_key")
+@patch("geoafrica.core.config.GeoAfricaConfig.get_api_key")
 @patch("geoafrica.datasets.elevation.GeoAfricaSession")
 def test_get_dem_calls_opentopo(mock_session, mock_key):
     from geoafrica.datasets.elevation import get_dem
@@ -35,7 +35,7 @@ def test_get_dem_calls_opentopo(mock_session, mock_key):
         assert isinstance(da, xr.DataArray)
 
 
-def test_terrain_profile(requests_mock):
+def test_terrain_profile():
     from geoafrica.datasets.elevation import terrain_profile
     import pandas as pd
 
@@ -44,7 +44,6 @@ def test_terrain_profile(requests_mock):
 
         # Mock raster value selection points
         fake_da = xr.DataArray(np.zeros((10, 10)))
-        fake_da.rio = MagicMock()
         mock_fetch.return_value = fake_da
 
         # Mocking the sample() call to trace profile
@@ -68,10 +67,9 @@ def test_compute_slope_aspect():
     ], dtype=float)
     
     da = xr.DataArray(arr)
-    da.rio = MagicMock()
-    da.rio.resolution.return_value = (30, 30)
-
-    slope, aspect = compute_slope_aspect(da)
-    assert isinstance(slope, xr.DataArray)
-    assert isinstance(aspect, xr.DataArray)
-    pass
+    
+    with patch("xarray.DataArray.rio", create=True) as mock_rio:
+        mock_rio.resolution.return_value = (30, 30)
+        slope, aspect = compute_slope_aspect(da)
+        assert isinstance(slope, xr.DataArray)
+        assert isinstance(aspect, xr.DataArray)
