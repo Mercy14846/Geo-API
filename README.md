@@ -10,7 +10,7 @@
 
 **One `pip install`. Every geospatial dataset. Any country on Earth.**
 
-*Specialising in African communities — powered entirely by open data.*
+*Specialising in African communities, powered entirely by open data.*
 
 </div>
 
