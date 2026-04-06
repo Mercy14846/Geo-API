@@ -1,4 +1,4 @@
-# GeoAfrica SDK 🌍
+# GeoAfrica SDK
 
 <div align="center">
 
@@ -19,9 +19,9 @@
 ## Overview
 
 **GeoAfrica** is a unified Python SDK for geospatial data access, built and maintained by **Merczcord Technologies Ltd.**  
-It aggregates **10+ authoritative open-data sources** into a single, developer-friendly interface — no complex API wrangling, no data format juggling.
+It aggregates **10+ authoritative open-data sources** into a single, developer-friendly interface, no complex API wrangling, no data format juggling.
 
-Whether you're mapping health facilities in Nigeria, tracking active wildfires in Ethiopia, analysing population density in Kenya, or querying road networks across West Africa — one import is all you need.
+Whether you're mapping health facilities in Nigeria, tracking active wildfires in Ethiopia, analysing population density in Kenya, or querying road networks across West Africa, one import is all you need.
 
 ```python
 import geoafrica
@@ -31,7 +31,7 @@ import geoafrica
 
 ---
 
-## ✨ Features
+## Features
 
 | Module | What it does | Data Source |
 |--------|-------------|-------------|
@@ -50,7 +50,7 @@ import geoafrica
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ```bash
 pip install geoafrica
@@ -75,7 +75,7 @@ pip install geoafrica[full]
 
 ---
 
-## 🔑 API Keys
+## API Keys
 
 Most modules work **without any API key**. A few providers require a free registration:
 
@@ -103,7 +103,7 @@ geoafrica.configure(nasa_firms_key="your_key_here")
 
 ---
 
-## 📚 Usage Examples
+## Usage Examples
 
 ### Administrative Boundaries
 
@@ -378,7 +378,7 @@ writers.to_geoparquet(hospitals, "hospitals.parquet")
 
 ---
 
-## 🖥️ CLI Usage
+## CLI Usage
 
 ```bash
 # Show version and API key status
@@ -410,7 +410,7 @@ geoafrica countries --region africa
 
 ---
 
-## 🗺️ Supported Countries
+## Supported Countries
 
 GeoAfrica has built-in support for all **54 African nations** plus major countries worldwide.
 Use any of the following identifier formats:
@@ -425,7 +425,7 @@ boundaries.get_country("DRC")      # Common abbreviation
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 geoafrica/
@@ -437,15 +437,15 @@ geoafrica/
 ```
 
 **Design principles:**
-- 🔌 **Plug-and-play** — zero config for most modules
-- 💾 **Smart caching** — downloads cached locally to avoid re-fetching
-- 🔄 **Retry logic** — automatic retry with exponential backoff
-- 🌐 **Rate limiting** — per-host rate limiting to respect API policies
-- 📦 **Standard outputs** — all vector data returns `GeoDataFrame`, rasters return `xarray.DataArray`
+- **Plug-and-play** — zero config for most modules
+- **Smart caching** — downloads cached locally to avoid re-fetching
+- **Retry logic** — automatic retry with exponential backoff
+- **Rate limiting** — per-host rate limiting to respect API policies
+- **Standard outputs** — all vector data returns `GeoDataFrame`, rasters return `xarray.DataArray`
 
 ---
 
-## 📊 Data Attribution
+## Data Attribution
 
 GeoAfrica aggregates open data. Please attribute the original providers:
 
@@ -462,7 +462,7 @@ GeoAfrica aggregates open data. Please attribute the original providers:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! To add a new data module:
 
@@ -474,19 +474,19 @@ Contributions are welcome! To add a new data module:
 
 ---
 
-## 📄 License
+## License
 
 MIT License — see [LICENSE](LICENSE).
 
 ---
 
-## 🏢 About Merczcord Technologies Ltd.
+## About Merczcord Technologies Ltd.
 
 **GeoAfrica** is a product of **Merczcord Technologies Ltd.**, a technology company focused on building data infrastructure and geospatial intelligence tools for African communities and beyond.
 
-- 🌐 Website: [merczcord.com](https://merczcord.com)
-- 📧 Contact: info@merczcord.com
-- 🐙 GitHub: [github.com/Mercy14846/Geo-API](https://github.com/Mercy14846/Geo-API)
+- Website: [merczcord.com](https://merczcord.com)
+- Contact: info@merczcord.com
+- GitHub: [github.com/Mercy14846/Geo-API](https://github.com/Mercy14846/Geo-API)
 
 ---
 
