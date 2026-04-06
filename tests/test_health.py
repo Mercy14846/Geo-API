@@ -18,9 +18,12 @@ MOCK_FEATURES = {
     ]
 }
 
+@patch("geoafrica.datasets.boundaries.get_bbox")
 @patch("geoafrica.datasets.health.GeoAfricaSession")
-def test_get_facilities(mock_session):
+def test_get_facilities(mock_session, mock_get_bbox):
     from geoafrica.datasets.health import get_facilities
+    
+    mock_get_bbox.return_value = [2.0, 4.0, 14.0, 13.0]
     
     mock_resp = MagicMock()
     mock_resp.json.return_value = MOCK_FEATURES

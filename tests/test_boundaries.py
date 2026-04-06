@@ -62,7 +62,7 @@ class TestListCountries:
 # get_bbox
 # ---------------------------------------------------------------------------
 class TestGetBBox:
-    def test_returns_four_floats(self, requests_mock):
+    def test_returns_four_floats(self):
         """Mock GADM response to avoid real HTTP calls."""
         import geopandas as gpd
         from shapely.geometry import box
