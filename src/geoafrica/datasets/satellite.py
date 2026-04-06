@@ -67,6 +67,7 @@ def search(
     collection: str,
     bbox: Optional[List[float]] = None,
     country: Optional[str] = None,
+    location: Optional[str] = None,
     date_range: str = "2023-01-01/2023-12-31",
     max_cloud_cover: int = 20,
     limit: int = 10,
@@ -80,9 +81,11 @@ def search(
     collection : str
         STAC collection ID (e.g. 'sentinel-2-l2a', 's2_l2a').
     bbox : list of float, optional
-        [min_lon, min_lat, max_lon, max_lat]. Provide this OR country.
+        [min_lon, min_lat, max_lon, max_lat]. Provide this OR country OR location.
     country : str, optional
-        Country name/ISO code (auto-computes bbox). Provide this OR bbox.
+        Country name/ISO code (auto-computes bbox). Provide this OR bbox OR location.
+    location: str, optional
+        Specific city, state, or region (auto-computes bbox via geocoding).
     date_range : str
         ISO-8601 date range 'YYYY-MM-DD/YYYY-MM-DD'.
     max_cloud_cover : int
@@ -111,15 +114,30 @@ def search(
         import pystac_client
     except ImportError:
         raise ImportError(
-            "Install satellite dependencies: pip install geoafrica[satellite]"
+            "Install satellite dependencies: pip install \"geoafrica[satellite]\""
         )
 
     if country and bbox is None:
         from geoafrica.datasets.boundaries import get_bbox
         bbox = get_bbox(country)
+        
+    if location and bbox is None:
+        import geopandas as gpd
+        # Geocode the location directly using Nominatim (requires network)
+        gdf = gpd.tools.geocode(location, provider="nominatim", user_agent="geoafrica_sdk")
+        if gdf.empty or gdf["geometry"].iloc[0] is None:
+            raise ValueError(f"Could not find coordinates for location: '{location}'")
+        bounds = gdf.total_bounds # [minx, miny, maxx, maxy]
+        
+        # If it's a single point rather than a region, buffer it slightly so STAC catches intersecting images
+        if bounds[0] == bounds[2] and bounds[1] == bounds[3]:
+            # ~10km buffer roughly (0.1 degrees)
+            bbox = [bounds[0]-0.1, bounds[1]-0.1, bounds[2]+0.1, bounds[3]+0.1]
+        else:
+            bbox = list(bounds)
 
     if bbox is None:
-        raise ValueError("Provide either 'bbox' or 'country'.")
+        raise ValueError("Provide either 'bbox', 'country', or 'location'.")
 
     # Auto-select catalog
     if catalog is None:
