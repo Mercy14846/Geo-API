@@ -8,12 +8,11 @@ import geopandas as gpd
 
 # Mock healthsites response
 MOCK_FEATURES = {
-    "type": "FeatureCollection",
-    "features": [
+    "results": [
         {
-            "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [3.38, 6.45]},
-            "properties": {"name": "Lagos Health", "amenity": "hospital"}
+            "name": "Lagos Health",
+            "facility_type": "hospital",
+            "location": {"coordinates": [3.38, 6.45]}
         }
     ]
 }
@@ -41,7 +40,11 @@ def test_nearest_to(mock_nearest, mock_facilities):
     from geoafrica.datasets.health import nearest_to
     
     # Mocking get_facilities
-    mock_facilities.return_value = gpd.GeoDataFrame()
+    mock_facilities.return_value = gpd.GeoDataFrame(
+        {"name": ["Other Facility"]},
+        geometry=gpd.points_from_xy([3.4], [6.5]),
+        crs="EPSG:4326"
+    )
     
     # Mocking nearest_facility
     mock_nearest.return_value = gpd.GeoDataFrame(

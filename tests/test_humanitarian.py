@@ -5,42 +5,34 @@ import pytest
 from unittest.mock import patch, MagicMock
 
 
-@patch("geoafrica.datasets.humanitarian.GeoAfricaSession")
-def test_search(mock_session):
+@patch("hdx.data.dataset.Dataset.search_in_hdx")
+def test_search(mock_search):
     from geoafrica.datasets.humanitarian import search
     import pandas as pd
 
-    mock_resp = MagicMock()
-    mock_resp.json.return_value = {
-        "success": True,
-        "result": {
-            "results": [
-                {"name": "test-data", "title": "Test Title", "organization": {"title": "Org"}}
-            ]
-        }
-    }
-    mock_session.return_value.__enter__.return_value.get.return_value = mock_resp
+    # Mock hdx Dataset
+    mock_ds = MagicMock()
+    mock_ds.get.side_effect = lambda k, d="": {"title": "Test Title", "name": "test-data", "id": "test-data"}.get(k, d)
+    
+    mock_org = {"title": "Org"}
+    mock_ds.get_organization.return_value = mock_org
+    
+    mock_search.return_value = [mock_ds]
 
     df = search("flood", rows=1)
     assert isinstance(df, pd.DataFrame)
     assert len(df) == 1
-    assert df["id"].iloc[0] == "test-data"
+    assert df["hdx_id"].iloc[0] == "test-data"
 
 
-@patch("geoafrica.datasets.humanitarian.GeoAfricaSession")
-def test_get_dataset(mock_session):
+@patch("hdx.data.dataset.Dataset.read_from_hdx")
+def test_get_dataset(mock_read):
     from geoafrica.datasets.humanitarian import get_dataset
     
-    mock_resp = MagicMock()
-    mock_resp.json.return_value = {
-        "success": True,
-        "result": {
-            "resources": [
-                {"name": "file.shp", "format": "SHP", "url": "http://example.com/file.zip"}
-            ]
-        }
-    }
-    mock_session.return_value.__enter__.return_value.get.return_value = mock_resp
+    mock_ds = MagicMock()
+    mock_res = {"name": "file.shp", "format": "SHP", "url": "http://example.com/file.zip"}
+    mock_ds.get_resources.return_value = [mock_res]
+    mock_read.return_value = mock_ds
 
     meta, res = get_dataset("test-dataset")
     assert isinstance(res, list)
