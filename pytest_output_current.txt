@@ -1,0 +1,50 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\173330\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\173330\OneDrive\Documents\Codeses\Geo-API
+configfile: pyproject.toml
+plugins: anyio-3.7.1, asyncio-1.3.0, cov-7.1.0, mock-3.15.1, zarr-3.1.5
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 80 items
+
+tests/test_analysis.py::TestSpatialClip::test_clip_reduces_features PASSED [  1%]
+tests/test_analysis.py::TestSpatialClip::test_clip_with_geoseries PASSED [  2%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_expands_geometry PASSED [  3%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_preserves_crs PASSED [  5%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_zero_km PASSED    [  6%]
+tests/test_analysis.py::TestSpatialDissolve::test_dissolve_reduces_rows PASSED [  7%]
+tests/test_analysis.py::TestSpatialDissolve::test_dissolve_preserves_geometry_type PASSED [  8%]
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly PASSED [ 10%]
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted PASSED [ 11%]
+tests/test_analysis.py::TestBboxToPolygon::test_returns_geodataframe PASSED [ 12%]
+tests/test_analysis.py::TestNearestFacility::test_returns_nearest PASSED [ 13%]
+tests/test_analysis.py::TestNearestFacility::test_distance_non_negative PASSED [ 15%]
+tests/test_analysis.py::TestPointInPolygon::test_join_assigns_polygon_attrs PASSED [ 16%]
+tests/test_analysis.py::TestZonalStats::test_invalid_stat_raises PASSED  [ 17%]
+tests/test_boundaries.py::TestResolveISO3::test_full_name PASSED         [ 18%]
+tests/test_boundaries.py::TestResolveISO3::test_iso2 PASSED              [ 20%]
+tests/test_boundaries.py::TestResolveISO3::test_iso3_passthrough PASSED  [ 21%]
+tests/test_boundaries.py::TestResolveISO3::test_unknown_raises PASSED    [ 22%]
+tests/test_boundaries.py::TestListCountries::test_returns_dataframe PASSED [ 23%]
+tests/test_boundaries.py::TestListCountries::test_africa_filter PASSED   [ 25%]
+tests/test_boundaries.py::TestListCountries::test_no_duplicate_iso2 PASSED [ 26%]
+tests/test_boundaries.py::TestGetBBox::test_returns_four_floats PASSED   [ 27%]
+tests/test_climate.py::test_get_rainfall FAILED                          [ 28%]
+tests/test_climate.py::test_monthly_series PASSED                        [ 30%]
+tests/test_climate.py::test_rainfall_anomaly PASSED                      [ 31%]
+tests/test_core.py::TestGeoAfricaConfig::test_default_cache_dir PASSED   [ 32%]
+tests/test_core.py::TestGeoAfricaConfig::test_custom_cache_dir PASSED    [ 33%]
+tests/test_core.py::TestGeoAfricaConfig::test_default_timeout PASSED     [ 35%]
+tests/test_core.py::TestGeoAfricaConfig::test_set_and_get_api_key PASSED [ 36%]
+tests/test_core.py::TestGeoAfricaConfig::test_env_var_override PASSED    [ 37%]
+tests/test_core.py::TestGeoAfricaConfig::test_require_api_key_raises_when_missing PASSED [ 38%]
+tests/test_core.py::TestGeoAfricaConfig::test_info_returns_dict PASSED   [ 40%]
+tests/test_core.py::TestGeoAfricaConfig::test_configure_singleton PASSED [ 41%]
+tests/test_core.py::TestExceptions::test_data_not_found PASSED           [ 42%]
+tests/test_core.py::TestExceptions::test_api_key_missing PASSED          [ 43%]
+tests/test_core.py::TestExceptions::test_rate_limit_error PASSED         [ 45%]
+tests/test_core.py::TestExceptions::test_invalid_bbox PASSED             [ 46%]
+tests/test_core.py::TestExceptions::test_unsupported_format PASSED       [ 47%]
+tests/test_core.py::TestExceptions::test_exception_hierarchy PASSED      [ 48%]
+tests/test_elevation.py::test_list_sources PASSED                        [ 50%]
+tests/test_elevation.py::test_get_dem_calls_opentopo 
