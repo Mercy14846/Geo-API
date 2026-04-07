@@ -47,4 +47,201 @@ tests/test_core.py::TestExceptions::test_invalid_bbox PASSED             [ 46%]
 tests/test_core.py::TestExceptions::test_unsupported_format PASSED       [ 47%]
 tests/test_core.py::TestExceptions::test_exception_hierarchy PASSED      [ 48%]
 tests/test_elevation.py::test_list_sources PASSED                        [ 50%]
-tests/test_elevation.py::test_get_dem_calls_opentopo 
+tests/test_elevation.py::test_get_dem_calls_opentopo FAILED              [ 51%]
+tests/test_elevation.py::test_terrain_profile PASSED                     [ 52%]
+tests/test_elevation.py::test_compute_slope_aspect PASSED                [ 53%]
+tests/test_fire.py::TestParseFirmsCSV::test_valid_csv PASSED             [ 55%]
+tests/test_fire.py::TestParseFirmsCSV::test_empty_response PASSED        [ 56%]
+tests/test_fire.py::TestParseFirmsCSV::test_error_response PASSED        [ 57%]
+tests/test_fire.py::TestParseFirmsCSV::test_columns_preserved PASSED     [ 58%]
+tests/test_fire.py::TestParseFirmsCSV::test_coordinate_values PASSED     [ 60%]
+tests/test_fire.py::TestFireSummary::test_summary_by_date PASSED         [ 61%]
+tests/test_fire.py::TestFireSummary::test_empty_summary PASSED           [ 62%]
+tests/test_fire.py::TestGetFirmsKey::test_missing_key_raises PASSED      [ 63%]
+tests/test_fire.py::TestGetFirmsKey::test_key_from_env PASSED            [ 65%]
+tests/test_health.py::test_get_facilities FAILED                         [ 66%]
+tests/test_health.py::test_nearest_to FAILED                             [ 67%]
+tests/test_health.py::test_count_by_admin PASSED                         [ 68%]
+tests/test_humanitarian.py::test_search PASSED                           [ 70%]
+tests/test_humanitarian.py::test_get_dataset FAILED                      [ 71%]
+tests/test_humanitarian.py::test_download_dataset PASSED                 [ 72%]
+tests/test_io.py::test_write_and_read_vector PASSED                      [ 73%]
+tests/test_io.py::test_write_and_read_csv PASSED                         [ 75%]
+tests/test_osm.py::TestParseOverpassResponse::test_nodes_to_points PASSED [ 76%]
+tests/test_osm.py::TestParseOverpassResponse::test_empty_response PASSED [ 77%]
+tests/test_osm.py::TestParseOverpassResponse::test_tags_preserved PASSED [ 78%]
+tests/test_osm.py::TestBuildOverpassQuery::test_single_tag PASSED        [ 80%]
+tests/test_osm.py::TestBuildOverpassQuery::test_list_values PASSED       [ 81%]
+tests/test_osm.py::TestGeocodeTobbox::test_valid_location PASSED         [ 82%]
+tests/test_osm.py::TestGeocodeTobbox::test_not_found_raises PASSED       [ 83%]
+tests/test_osm.py::TestGetFeaturesbbox::test_returns_geodataframe PASSED [ 85%]
+tests/test_osm.py::TestGetFeaturesbbox::test_invalid_bbox_raises PASSED  [ 86%]
+tests/test_population.py::test_available_years PASSED                    [ 87%]
+tests/test_population.py::test_get_grid PASSED                           [ 88%]
+tests/test_population.py::test_get_stats FAILED                          [ 90%]
+tests/test_roads.py::test_get_network PASSED                             [ 91%]
+tests/test_roads.py::test_road_stats PASSED                              [ 92%]
+tests/test_satellite.py::test_search FAILED                              [ 93%]
+tests/test_satellite.py::test_deafrica_products PASSED                   [ 95%]
+tests/test_viz.py::test_quick_map_points PASSED                          [ 96%]
+tests/test_viz.py::test_quick_map_polygons PASSED                        [ 97%]
+tests/test_viz.py::test_choropleth PASSED                                [ 98%]
+tests/test_viz.py::test_add_layer PASSED                                 [100%]
+
+================================== FAILURES ===================================
+______________________________ test_get_rainfall ______________________________
+tests\test_climate.py:17: in test_get_rainfall
+    fake_da = fake_da.rio.write_crs("EPSG:4326")
+              ^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\common.py:306: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'DataArray' object has no attribute 'rio'
+_________________________ test_get_dem_calls_opentopo _________________________
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+The above exception was the direct cause of the following exception:
+..\..\..\..\anaconda3\Lib\site-packages\requests\adapters.py:486: in send
+    resp = conn.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:871: in urlopen
+    return self.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:871: in urlopen
+    return self.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:871: in urlopen
+    return self.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:871: in urlopen
+    return self.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:871: in urlopen
+    return self.urlopen(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\connectionpool.py:841: in urlopen
+    retries = retries.increment(
+..\..\..\..\anaconda3\Lib\site-packages\urllib3\util\retry.py:535: in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='gadm.org', port=443): Max retries exceeded with url: /json/gadm41_NGA_0.json (Caused by ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+
+During handling of the above exception, another exception occurred:
+tests\test_elevation.py:34: in test_get_dem_calls_opentopo
+    da = get_dem("Nigeria")
+         ^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\elevation.py:100: in get_dem
+    bbox = get_bbox(country)
+           ^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:252: in get_bbox
+    gdf = get_country(country)
+          ^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:147: in get_country
+    return get_admin(country, level=0, source=source, crs=crs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:186: in get_admin
+    return _fetch_gadm(iso3, level, crs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:272: in _fetch_gadm
+    resp = s.get(url)
+           ^^^^^^^^^^
+src\geoafrica\core\session.py:139: in get
+    resp = self._session.get(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests_cache\session.py:133: in get
+    return self.request('GET', url, params=params, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests_cache\session.py:189: in request
+    return super().request(method, url, *args, headers=headers, **kwargs)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests\sessions.py:589: in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests_cache\session.py:255: in send
+    response = self._send_and_cache(request, actions, cached_response, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests_cache\session.py:279: in _send_and_cache
+    response = super().send(request, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests\sessions.py:703: in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\requests\adapters.py:519: in send
+    raise ConnectionError(e, request=request)
+E   requests.exceptions.ConnectionError: HTTPSConnectionPool(host='gadm.org', port=443): Max retries exceeded with url: /json/gadm41_NGA_0.json (Caused by ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+------------------------------ Captured log call ------------------------------
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /json/gadm41_NGA_0.json
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /json/gadm41_NGA_0.json
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /json/gadm41_NGA_0.json
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /json/gadm41_NGA_0.json
+WARNING  urllib3.connectionpool:connectionpool.py:868 Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /json/gadm41_NGA_0.json
+_____________________________ test_get_facilities _____________________________
+tests\test_health.py:33: in test_get_facilities
+    assert len(gdf) == 1
+E   assert 0 == 1
+E    +  where 0 = len(Empty GeoDataFrame\nColumns: [geometry]\nIndex: [])
+_______________________________ test_nearest_to _______________________________
+tests\test_health.py:57: in test_nearest_to
+    assert isinstance(result, list)
+E   assert False
+E    +  where False = isinstance(             name         geometry  distance_km\n0  Other Facility  POINT (3.4 6.5)      6.02793, list)
+______________________________ test_get_dataset _______________________________
+tests\test_humanitarian.py:37: in test_get_dataset
+    meta, res = get_dataset("test-dataset")
+    ^^^^^^^^^
+E   ValueError: too many values to unpack (expected 2)
+_______________________________ test_get_stats ________________________________
+tests\test_population.py:58: in test_get_stats
+    df = get_stats("Lagos", country="Nigeria", level=1)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\population.py:194: in get_stats
+    "population": round(total_pop),
+                  ^^^^^^^^^^^^^^^^
+E   ValueError: cannot convert float NaN to integer
+_________________________________ test_search _________________________________
+tests\test_satellite.py:25: in test_search
+    items = search(
+src\geoafrica\datasets\satellite.py:122: in search
+    bbox = get_bbox(country)
+           ^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:252: in get_bbox
+    gdf = get_country(country)
+          ^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:147: in get_country
+    return get_admin(country, level=0, source=source, crs=crs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:186: in get_admin
+    return _fetch_gadm(iso3, level, crs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\boundaries.py:272: in _fetch_gadm
+    resp = s.get(url)
+           ^^^^^^^^^^
+src\geoafrica\core\session.py:145: in get
+    resp.raise_for_status()
+..\..\..\..\anaconda3\Lib\site-packages\requests\models.py:1021: in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+E   requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://gadm.org/json/gadm41_NGA_0.json
+============================== warnings summary ===============================
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60
+  C:\Users\173330\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.5' currently installed).
+    from pandas.core import (
+
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_expands_geometry
+  C:\Users\173330\OneDrive\Documents\Codeses\Geo-API\tests\test_analysis.py:70: UserWarning: Geometry is in a geographic CRS. Results from 'area' are likely incorrect. Use 'GeoSeries.to_crs()' to re-project geometries to a projected CRS before this operation.
+  
+    assert all(buffered.geometry.area > 0)
+
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted
+tests/test_health.py::test_nearest_to
+tests/test_health.py::test_nearest_to
+tests/test_health.py::test_nearest_to
+tests/test_health.py::test_nearest_to
+  C:\Users\173330\anaconda3\Lib\site-packages\pyproj\transformer.py:820: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    return self._transformer._transform_point(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_climate.py::test_get_rainfall - AttributeError: 'DataArray'...
+FAILED tests/test_elevation.py::test_get_dem_calls_opentopo - requests.except...
+FAILED tests/test_health.py::test_get_facilities - assert 0 == 1
+FAILED tests/test_health.py::test_nearest_to - assert False
+FAILED tests/test_humanitarian.py::test_get_dataset - ValueError: too many va...
+FAILED tests/test_population.py::test_get_stats - ValueError: cannot convert ...
+FAILED tests/test_satellite.py::test_search - requests.exceptions.HTTPError: ...
+============ 7 failed, 73 passed, 10 warnings in 120.53s (0:02:00) ============
