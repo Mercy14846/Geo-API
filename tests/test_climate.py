@@ -12,6 +12,7 @@ import numpy as np
 @patch("xarray.open_dataarray")
 def test_get_rainfall(mock_xr, mock_session):
     from geoafrica.datasets.climate import get_rainfall
+    import rioxarray
     
     fake_da = xr.DataArray(np.zeros((1, 10, 10)), dims=["time", "y", "x"])
     fake_da = fake_da.rio.write_crs("EPSG:4326")

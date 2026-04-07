@@ -34,10 +34,10 @@ def test_get_dataset(mock_read):
     mock_ds.get_resources.return_value = [mock_res]
     mock_read.return_value = mock_ds
 
-    meta, res = get_dataset("test-dataset")
-    assert isinstance(res, list)
-    assert len(res) == 1
-    assert res[0]["format"] == "SHP"
+    df = get_dataset("test-dataset")
+    assert isinstance(df, pd.DataFrame)
+    assert len(df) == 1
+    assert df["format"].iloc[0] == "SHP"
 
 
 def test_download_dataset():

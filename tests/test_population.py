@@ -52,7 +52,16 @@ def test_get_stats(mock_compute, mock_get_admin, mock_get_grid):
     mock_get_admin.return_value = gpd.GeoDataFrame(
         {"name": ["Lagos"]}, geometry=[box(3.0, 6.0, 3.5, 6.5)], crs="EPSG:4326"
     )
-    mock_get_grid.return_value = xr.DataArray(np.zeros((10, 10)))
+    fake_da = xr.DataArray(
+        np.zeros((10, 10)),
+        dims=["y", "x"],
+        coords={
+            "y": np.linspace(6.5, 3.0, 10),
+            "x": np.linspace(3.0, 4.0, 10)
+        }
+    )
+    fake_da = fake_da.rio.write_crs("EPSG:4326")
+    mock_get_grid.return_value = fake_da
     mock_compute.return_value = pd.DataFrame({"zone": ["Lagos"], "sum": [15000000]})
 
     df = get_stats("Lagos", country="Nigeria", level=1)

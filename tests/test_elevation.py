@@ -16,11 +16,13 @@ def test_list_sources():
     assert "SRTMGL1" in df["code"].values
 
 
+@patch("geoafrica.datasets.elevation.get_bbox")
 @patch("geoafrica.core.config.GeoAfricaConfig.get_api_key")
 @patch("geoafrica.datasets.elevation.GeoAfricaSession")
-def test_get_dem_calls_opentopo(mock_session, mock_key):
+def test_get_dem_calls_opentopo(mock_session, mock_key, mock_bbox):
     from geoafrica.datasets.elevation import get_dem
     
+    mock_bbox.return_value = [3.0, 4.0, 15.0, 13.0]
     mock_key.return_value = "fake_key"
     mock_resp = MagicMock()
     mock_resp.content = b"fake tif content"

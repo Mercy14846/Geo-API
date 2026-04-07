@@ -24,7 +24,7 @@ def test_search(mock_client_open):
 
     items = search(
         collection="sentinel-2-l2a",
-        country="Nigeria",
+        bbox=[3.0, 4.0, 4.0, 5.0],
         limit=1
     )
     

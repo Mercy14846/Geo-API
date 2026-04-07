@@ -26,7 +26,7 @@ def test_get_facilities(mock_session, mock_get_bbox):
     
     mock_resp = MagicMock()
     mock_resp.json.return_value = MOCK_FEATURES
-    mock_session.return_value.__enter__.return_value.get.return_value = mock_resp
+    mock_session.return_value.__enter__.return_value._session.get.return_value = mock_resp
 
     gdf = get_facilities("Nigeria", facility_type="hospital")
     assert isinstance(gdf, gpd.GeoDataFrame)
@@ -54,9 +54,9 @@ def test_nearest_to(mock_nearest, mock_facilities):
     )
 
     result = nearest_to(6.45, 3.38, "Nigeria")
-    assert isinstance(result, list)
+    assert isinstance(result, gpd.GeoDataFrame)
     assert len(result) == 1
-    assert result[0]["name"] == "Lagos Health"
+    assert result.iloc[0]["name"] == "Other Facility"
 
 
 @patch("geoafrica.datasets.health.get_facilities")
