@@ -24,17 +24,21 @@ def test_available_years(mock_session):
     assert 2020 in years
 
 
-@patch("geoafrica.datasets.population._fetch_worldpop")
-def test_get_grid(mock_fetch):
+@patch("geoafrica.datasets.population._build_worldpop_url")
+@patch("geoafrica.datasets.population.GeoAfricaSession")
+def test_get_grid(mock_session, mock_build):
     from geoafrica.datasets.population import get_grid
+    
+    mock_build.return_value = "http://fake-url.com/pop.tif"
     
     # Mock data array
     fake_da = xr.DataArray(np.zeros((10, 10)), dims=["y", "x"])
-    mock_fetch.return_value = fake_da
-
-    da = get_grid("NGA", year=2020)
+    with patch("xarray.open_dataarray") as mock_xr:
+        mock_xr.return_value = fake_da
+        da = get_grid("NGA", year=2020)
+        
     assert isinstance(da, xr.DataArray)
-    mock_fetch.assert_called_once()
+    mock_build.assert_called_once()
 
 
 @patch("geoafrica.datasets.population.get_grid")
@@ -43,9 +47,10 @@ def test_get_grid(mock_fetch):
 def test_get_stats(mock_compute, mock_get_admin, mock_get_grid):
     from geoafrica.datasets.population import get_stats
     import geopandas as gpd
+    from shapely.geometry import box
     
     mock_get_admin.return_value = gpd.GeoDataFrame(
-        {"name": ["Lagos"]}, geometry=[], crs="EPSG:4326"
+        {"name": ["Lagos"]}, geometry=[box(3.0, 6.0, 3.5, 6.5)], crs="EPSG:4326"
     )
     mock_get_grid.return_value = xr.DataArray(np.zeros((10, 10)))
     mock_compute.return_value = pd.DataFrame({"zone": ["Lagos"], "sum": [15000000]})

@@ -5,7 +5,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 
 
-@patch("geoafrica.datasets.satellite.Client.open")
+@patch("pystac_client.Client.open")
 def test_search(mock_client_open):
     from geoafrica.datasets.satellite import search
     import pystac
@@ -33,7 +33,7 @@ def test_search(mock_client_open):
     assert items[0].id == "S2_fake_item"
 
 
-@patch("geoafrica.datasets.satellite.Client.open")
+@patch("pystac_client.Client.open")
 def test_deafrica_products(mock_client_open):
     from geoafrica.datasets.satellite import deafrica_products
     
