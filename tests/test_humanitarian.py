@@ -28,6 +28,7 @@ def test_search(mock_search):
 @patch("hdx.data.dataset.Dataset.read_from_hdx")
 def test_get_dataset(mock_read):
     from geoafrica.datasets.humanitarian import get_dataset
+    import pandas as pd
     
     mock_ds = MagicMock()
     mock_res = {"name": "file.shp", "format": "SHP", "url": "http://example.com/file.zip"}

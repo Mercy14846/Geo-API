@@ -8,11 +8,17 @@ import xarray as xr
 import numpy as np
 
 
-@patch("geoafrica.datasets.climate.GeoAfricaSession")
+@patch("geoafrica.datasets.boundaries.get_country")
+@patch("geoafrica.datasets.climate._download_chirps")
 @patch("xarray.open_dataarray")
-def test_get_rainfall(mock_xr, mock_session):
+def test_get_rainfall(mock_xr, mock_download, mock_country):
     from geoafrica.datasets.climate import get_rainfall
     import rioxarray
+    import geopandas as gpd
+    from shapely.geometry import box
+    
+    mock_download.return_value = "fake_path.tif"
+    mock_country.return_value = gpd.GeoDataFrame(geometry=[box(0, 0, 10, 10)], crs="EPSG:4326")
     
     fake_da = xr.DataArray(np.zeros((1, 10, 10)), dims=["time", "y", "x"])
     fake_da = fake_da.rio.write_crs("EPSG:4326")
