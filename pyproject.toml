@@ -9,7 +9,7 @@ description = "A unified geospatial data SDK for Africa and the world - open dat
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-  { name = "Merczcord Technologies Ltd.", email = "dev@merczcord.com" }
+  { name = "Merczcord Technologies Ltd.", email = "info@merczcord.com" }
 ]
 keywords = [
   "geospatial", "africa", "gis", "remote-sensing", "open-data",
