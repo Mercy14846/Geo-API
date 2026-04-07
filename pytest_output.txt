@@ -1,0 +1,316 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\173330\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\173330\OneDrive\Documents\Codeses\Geo-API
+configfile: pyproject.toml
+plugins: anyio-3.7.1, asyncio-1.3.0, cov-7.1.0, mock-3.15.1, zarr-3.1.5
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 80 items
+
+tests/test_analysis.py::TestSpatialClip::test_clip_reduces_features PASSED [  1%]
+tests/test_analysis.py::TestSpatialClip::test_clip_with_geoseries PASSED [  2%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_expands_geometry PASSED [  3%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_preserves_crs PASSED [  5%]
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_zero_km PASSED    [  6%]
+tests/test_analysis.py::TestSpatialDissolve::test_dissolve_reduces_rows PASSED [  7%]
+tests/test_analysis.py::TestSpatialDissolve::test_dissolve_preserves_geometry_type PASSED [  8%]
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly PASSED [ 10%]
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted PASSED [ 11%]
+tests/test_analysis.py::TestBboxToPolygon::test_returns_geodataframe PASSED [ 12%]
+tests/test_analysis.py::TestNearestFacility::test_returns_nearest PASSED [ 13%]
+tests/test_analysis.py::TestNearestFacility::test_distance_non_negative PASSED [ 15%]
+tests/test_analysis.py::TestPointInPolygon::test_join_assigns_polygon_attrs PASSED [ 16%]
+tests/test_analysis.py::TestZonalStats::test_invalid_stat_raises PASSED  [ 17%]
+tests/test_boundaries.py::TestResolveISO3::test_full_name PASSED         [ 18%]
+tests/test_boundaries.py::TestResolveISO3::test_iso2 PASSED              [ 20%]
+tests/test_boundaries.py::TestResolveISO3::test_iso3_passthrough PASSED  [ 21%]
+tests/test_boundaries.py::TestResolveISO3::test_unknown_raises PASSED    [ 22%]
+tests/test_boundaries.py::TestListCountries::test_returns_dataframe PASSED [ 23%]
+tests/test_boundaries.py::TestListCountries::test_africa_filter PASSED   [ 25%]
+tests/test_boundaries.py::TestListCountries::test_no_duplicate_iso2 PASSED [ 26%]
+tests/test_boundaries.py::TestGetBBox::test_returns_four_floats PASSED   [ 27%]
+tests/test_climate.py::test_get_rainfall FAILED                          [ 28%]
+tests/test_climate.py::test_monthly_series PASSED                        [ 30%]
+tests/test_climate.py::test_rainfall_anomaly FAILED                      [ 31%]
+tests/test_core.py::TestGeoAfricaConfig::test_default_cache_dir PASSED   [ 32%]
+tests/test_core.py::TestGeoAfricaConfig::test_custom_cache_dir PASSED    [ 33%]
+tests/test_core.py::TestGeoAfricaConfig::test_default_timeout PASSED     [ 35%]
+tests/test_core.py::TestGeoAfricaConfig::test_set_and_get_api_key PASSED [ 36%]
+tests/test_core.py::TestGeoAfricaConfig::test_env_var_override PASSED    [ 37%]
+tests/test_core.py::TestGeoAfricaConfig::test_require_api_key_raises_when_missing PASSED [ 38%]
+tests/test_core.py::TestGeoAfricaConfig::test_info_returns_dict PASSED   [ 40%]
+tests/test_core.py::TestGeoAfricaConfig::test_configure_singleton PASSED [ 41%]
+tests/test_core.py::TestExceptions::test_data_not_found PASSED           [ 42%]
+tests/test_core.py::TestExceptions::test_api_key_missing PASSED          [ 43%]
+tests/test_core.py::TestExceptions::test_rate_limit_error PASSED         [ 45%]
+tests/test_core.py::TestExceptions::test_invalid_bbox PASSED             [ 46%]
+tests/test_core.py::TestExceptions::test_unsupported_format PASSED       [ 47%]
+tests/test_core.py::TestExceptions::test_exception_hierarchy PASSED      [ 48%]
+tests/test_elevation.py::test_list_sources PASSED                        [ 50%]
+tests/test_elevation.py::test_get_dem_calls_opentopo FAILED              [ 51%]
+tests/test_elevation.py::test_terrain_profile FAILED                     [ 52%]
+tests/test_elevation.py::test_compute_slope_aspect FAILED                [ 53%]
+tests/test_fire.py::TestParseFirmsCSV::test_valid_csv PASSED             [ 55%]
+tests/test_fire.py::TestParseFirmsCSV::test_empty_response PASSED        [ 56%]
+tests/test_fire.py::TestParseFirmsCSV::test_error_response PASSED        [ 57%]
+tests/test_fire.py::TestParseFirmsCSV::test_columns_preserved PASSED     [ 58%]
+tests/test_fire.py::TestParseFirmsCSV::test_coordinate_values PASSED     [ 60%]
+tests/test_fire.py::TestFireSummary::test_summary_by_date PASSED         [ 61%]
+tests/test_fire.py::TestFireSummary::test_empty_summary PASSED           [ 62%]
+tests/test_fire.py::TestGetFirmsKey::test_missing_key_raises PASSED      [ 63%]
+tests/test_fire.py::TestGetFirmsKey::test_key_from_env PASSED            [ 65%]
+tests/test_health.py::test_get_facilities FAILED                         [ 66%]
+tests/test_health.py::test_nearest_to FAILED                             [ 67%]
+tests/test_health.py::test_count_by_admin PASSED                         [ 68%]
+tests/test_humanitarian.py::test_search FAILED                           [ 70%]
+tests/test_humanitarian.py::test_get_dataset FAILED                      [ 71%]
+tests/test_humanitarian.py::test_download_dataset PASSED                 [ 72%]
+tests/test_io.py::test_write_and_read_vector PASSED                      [ 73%]
+tests/test_io.py::test_write_and_read_csv PASSED                         [ 75%]
+tests/test_osm.py::TestParseOverpassResponse::test_nodes_to_points PASSED [ 76%]
+tests/test_osm.py::TestParseOverpassResponse::test_empty_response PASSED [ 77%]
+tests/test_osm.py::TestParseOverpassResponse::test_tags_preserved PASSED [ 78%]
+tests/test_osm.py::TestBuildOverpassQuery::test_single_tag PASSED        [ 80%]
+tests/test_osm.py::TestBuildOverpassQuery::test_list_values PASSED       [ 81%]
+tests/test_osm.py::TestGeocodeTobbox::test_valid_location PASSED         [ 82%]
+tests/test_osm.py::TestGeocodeTobbox::test_not_found_raises PASSED       [ 83%]
+tests/test_osm.py::TestGetFeaturesbbox::test_returns_geodataframe PASSED [ 85%]
+tests/test_osm.py::TestGetFeaturesbbox::test_invalid_bbox_raises PASSED  [ 86%]
+tests/test_population.py::test_available_years PASSED                    [ 87%]
+tests/test_population.py::test_get_grid FAILED                           [ 88%]
+tests/test_population.py::test_get_stats FAILED                          [ 90%]
+tests/test_roads.py::test_get_network PASSED                             [ 91%]
+tests/test_roads.py::test_road_stats PASSED                              [ 92%]
+tests/test_satellite.py::test_search FAILED                              [ 93%]
+tests/test_satellite.py::test_deafrica_products FAILED                   [ 95%]
+tests/test_viz.py::test_quick_map_points PASSED                          [ 96%]
+tests/test_viz.py::test_quick_map_polygons PASSED                        [ 97%]
+tests/test_viz.py::test_choropleth PASSED                                [ 98%]
+tests/test_viz.py::test_add_layer PASSED                                 [100%]
+
+================================== FAILURES ===================================
+______________________________ test_get_rainfall ______________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.climate' has no attribute 'xr'
+____________________________ test_rainfall_anomaly ____________________________
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\dataarray.py:876: in _getitem_coord
+    var = self._coords[key]
+          ^^^^^^^^^^^^^^^^^
+E   KeyError: 'annual_mm'
+
+During handling of the above exception, another exception occurred:
+tests\test_climate.py:54: in test_rainfall_anomaly
+    assert anomaly["annual_mm"] == 100.0
+           ^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\dataarray.py:885: in __getitem__
+    return self._getitem_coord(key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\dataarray.py:879: in _getitem_coord
+    _, key, var = _get_virtual_variable(self._coords, key, dim_sizes)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\dataset_utils.py:79: in _get_virtual_variable
+    raise KeyError(key)
+E   KeyError: 'annual_mm'
+_________________________ test_get_dem_calls_opentopo _________________________
+tests\test_elevation.py:30: in test_get_dem_calls_opentopo
+    with patch("geoafrica.datasets.elevation.xr.open_dataarray") as mock_xr:
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.elevation' has no attribute 'xr'
+____________________________ test_terrain_profile _____________________________
+tests\test_elevation.py:42: in test_terrain_profile
+    with patch("geoafrica.datasets.elevation.xr.open_dataarray") as mock_xr, \
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.elevation' has no attribute 'xr'
+__________________________ test_compute_slope_aspect __________________________
+tests\test_elevation.py:73: in test_compute_slope_aspect
+    slope, aspect = compute_slope_aspect(da)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\elevation.py:247: in compute_slope_aspect
+    lat_center = float(dem.y.mean())
+                       ^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\xarray\core\common.py:306: in __getattr__
+    raise AttributeError(
+E   AttributeError: 'DataArray' object has no attribute 'y'
+_____________________________ test_get_facilities _____________________________
+tests\test_health.py:34: in test_get_facilities
+    assert len(gdf) == 1
+E   assert 0 == 1
+E    +  where 0 = len(Empty GeoDataFrame\nColumns: [geometry]\nIndex: [])
+_______________________________ test_nearest_to _______________________________
+tests\test_health.py:53: in test_nearest_to
+    result = nearest_to(6.45, 3.38, "Nigeria")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\geoafrica\datasets\health.py:120: in nearest_to
+    raise DataNotFoundError(
+E   geoafrica.core.exceptions.DataNotFoundError: No facilities found in 'Nigeria' to compute nearest.
+_________________________________ test_search _________________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1443: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1416: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'geoafrica.datasets.humanitarian' from 'C:\\Users\\173330\\OneDrive\\Documents\\Codeses\\Geo-API\\src\\geoafrica\\datasets\\humanitarian.py'> does not have the attribute 'GeoAfricaSession'
+______________________________ test_get_dataset _______________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1443: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1416: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'geoafrica.datasets.humanitarian' from 'C:\\Users\\173330\\OneDrive\\Documents\\Codeses\\Geo-API\\src\\geoafrica\\datasets\\humanitarian.py'> does not have the attribute 'GeoAfricaSession'
+________________________________ test_get_grid ________________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1443: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1416: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'geoafrica.datasets.population' from 'C:\\Users\\173330\\OneDrive\\Documents\\Codeses\\Geo-API\\src\\geoafrica\\datasets\\population.py'> does not have the attribute '_fetch_worldpop'
+_______________________________ test_get_stats ________________________________
+tests\test_population.py:47: in test_get_stats
+    mock_get_admin.return_value = gpd.GeoDataFrame(
+..\..\..\..\anaconda3\Lib\site-packages\geopandas\geodataframe.py:209: in __init__
+    self.set_geometry(geometry, inplace=True, crs=crs)
+..\..\..\..\anaconda3\Lib\site-packages\geopandas\geodataframe.py:413: in set_geometry
+    frame[geo_column_name] = level
+    ^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\geopandas\geodataframe.py:1819: in __setitem__
+    super().__setitem__(key, value)
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\frame.py:4299: in __setitem__
+    self._set_item(key, value)
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\frame.py:4512: in _set_item
+    value, refs = self._sanitize_column(value)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\frame.py:5253: in _sanitize_column
+    com.require_length_match(value, self.index)
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\common.py:571: in require_length_match
+    raise ValueError(
+E   ValueError: Length of values (0) does not match length of index (1)
+_________________________________ test_search _________________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.satellite' has no attribute 'Client'
+___________________________ test_deafrica_products ____________________________
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1372: in patched
+    with self.decoration_helper(patched,
+..\..\..\..\anaconda3\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1354: in decoration_helper
+    arg = exit_stack.enter_context(patching)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\contextlib.py:505: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\unittest\mock.py:1427: in __enter__
+    self.target = self.getter()
+                  ^^^^^^^^^^^^^
+..\..\..\..\anaconda3\Lib\pkgutil.py:715: in resolve_name
+    result = getattr(result, p)
+             ^^^^^^^^^^^^^^^^^^
+E   AttributeError: module 'geoafrica.datasets.satellite' has no attribute 'Client'
+============================== warnings summary ===============================
+..\..\..\..\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60
+  C:\Users\173330\anaconda3\Lib\site-packages\pandas\core\arrays\masked.py:60: UserWarning: Pandas requires version '1.3.6' or newer of 'bottleneck' (version '1.3.5' currently installed).
+    from pandas.core import (
+
+tests/test_analysis.py::TestSpatialBuffer::test_buffer_expands_geometry
+  C:\Users\173330\OneDrive\Documents\Codeses\Geo-API\tests\test_analysis.py:70: UserWarning: Geometry is in a geographic CRS. Results from 'area' are likely incorrect. Use 'GeoSeries.to_crs()' to re-project geometries to a projected CRS before this operation.
+  
+    assert all(buffered.geometry.area > 0)
+
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly
+tests/test_analysis.py::TestWithinDistance::test_filters_correctly
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted
+tests/test_analysis.py::TestWithinDistance::test_distance_column_sorted
+  C:\Users\173330\anaconda3\Lib\site-packages\pyproj\transformer.py:820: DeprecationWarning: Conversion of an array with ndim > 0 to a scalar is deprecated, and will error in future. Ensure you extract a single element from your array before performing this operation. (Deprecated NumPy 1.25.)
+    return self._transformer._transform_point(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_climate.py::test_get_rainfall - AttributeError: module 'geo...
+FAILED tests/test_climate.py::test_rainfall_anomaly - KeyError: 'annual_mm'
+FAILED tests/test_elevation.py::test_get_dem_calls_opentopo - AttributeError:...
+FAILED tests/test_elevation.py::test_terrain_profile - AttributeError: module...
+FAILED tests/test_elevation.py::test_compute_slope_aspect - AttributeError: '...
+FAILED tests/test_health.py::test_get_facilities - assert 0 == 1
+FAILED tests/test_health.py::test_nearest_to - geoafrica.core.exceptions.Data...
+FAILED tests/test_humanitarian.py::test_search - AttributeError: <module 'geo...
+FAILED tests/test_humanitarian.py::test_get_dataset - AttributeError: <module...
+FAILED tests/test_population.py::test_get_grid - AttributeError: <module 'geo...
+FAILED tests/test_population.py::test_get_stats - ValueError: Length of value...
+FAILED tests/test_satellite.py::test_search - AttributeError: module 'geoafri...
+FAILED tests/test_satellite.py::test_deafrica_products - AttributeError: modu...
+============ 13 failed, 67 passed, 6 warnings in 67.46s (0:01:07) =============

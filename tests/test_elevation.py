@@ -27,7 +27,7 @@ def test_get_dem_calls_opentopo(mock_session, mock_key):
     mock_resp.status_code = 200
     mock_session.return_value.__enter__.return_value.get.return_value = mock_resp
 
-    with patch("geoafrica.datasets.elevation.xr.open_dataarray") as mock_xr:
+    with patch("xarray.open_dataarray") as mock_xr:
         mock_xr.return_value = xr.DataArray(np.zeros((10, 10)))
         
         # Calling get_dem should succeed if rasterio/xarray mock works
@@ -39,8 +39,8 @@ def test_terrain_profile():
     from geoafrica.datasets.elevation import terrain_profile
     import pandas as pd
 
-    with patch("geoafrica.datasets.elevation.xr.open_dataarray") as mock_xr, \
-         patch("geoafrica.datasets.elevation._fetch_opentopo") as mock_fetch:
+    with patch("xarray.open_dataarray") as mock_xr, \
+         patch("geoafrica.datasets.elevation.get_dem_bbox") as mock_fetch:
 
         # Mock raster value selection points
         fake_da = xr.DataArray(np.zeros((10, 10)))
@@ -66,7 +66,11 @@ def test_compute_slope_aspect():
         [10, 10, 10]
     ], dtype=float)
     
-    da = xr.DataArray(arr)
+    da = xr.DataArray(
+        arr,
+        dims=("y", "x"),
+        coords={"y": [2.0, 1.0, 0.0], "x": [0.0, 1.0, 2.0]}
+    )
     
     with patch("xarray.DataArray.rio", create=True) as mock_rio:
         mock_rio.resolution.return_value = (30, 30)

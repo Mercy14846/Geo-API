@@ -9,7 +9,7 @@ import numpy as np
 
 
 @patch("geoafrica.datasets.climate.GeoAfricaSession")
-@patch("geoafrica.datasets.climate.xr.open_dataarray")
+@patch("xarray.open_dataarray")
 def test_get_rainfall(mock_xr, mock_session):
     from geoafrica.datasets.climate import get_rainfall
     
@@ -37,19 +37,20 @@ def test_monthly_series(mock_boundary, mock_compute, mock_rainfall):
 
 
 @patch("geoafrica.datasets.climate.get_rainfall")
-@patch("geoafrica.analysis.zonal_stats.compute")
 @patch("geoafrica.datasets.boundaries.get_country")
-def test_rainfall_anomaly(mock_boundary, mock_compute, mock_rainfall):
+def test_rainfall_anomaly(mock_boundary, mock_rainfall):
     from geoafrica.datasets.climate import rainfall_anomaly
     
-    fake_da = xr.DataArray(np.zeros((10, 10)))
-    mock_rainfall.return_value = fake_da
-    # Mock compute returns 100 for current year, 80 for historical
-    mock_compute.side_effect = [
-        pd.DataFrame({"mean": [100.0]}),  # Active year
-        *[pd.DataFrame({"mean": [80.0]})] * 30  # Historical years
-    ]
+    # Mock get_rainfall to yield a 10x10 array of 100.0 for current year, 80.0 for historical
+    def mock_get_rainfall(c, year):
+        if year == 2022:
+            return xr.DataArray(np.full((10, 10), 100.0), dims=["y", "x"])
+        return xr.DataArray(np.full((10, 10), 80.0), dims=["y", "x"])
+        
+    mock_rainfall.side_effect = mock_get_rainfall
 
     anomaly = rainfall_anomaly("Senegal", year=2022)
-    assert anomaly["annual_mm"] == 100.0
-    assert anomaly["anomaly_pct"] == 25.0
+    assert isinstance(anomaly, xr.DataArray)
+    # 100 - 80 = 20
+    assert float(anomaly.values.mean()) == 20.0
+    assert anomaly.attrs["units"] == "mm"
