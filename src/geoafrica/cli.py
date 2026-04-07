@@ -44,7 +44,7 @@ BANNER = """
 
 
 @click.group()
-@click.version_option("0.1.0", prog_name="geoafrica")
+@click.version_option("0.2.0", prog_name="geoafrica")
 def main():
     """GeoAfrica: Unified geospatial data SDK for Africa and the world."""
     pass

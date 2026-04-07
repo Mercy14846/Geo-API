@@ -54,7 +54,7 @@ def _ensure_hdx() -> None:
         from hdx.hdx_configuration import Configuration
         Configuration.create(
             hdx_site="prod",
-            user_agent="GeoAfrica-SDK/0.1.0 (Merczcord Technologies Ltd.)",
+            user_agent="GeoAfrica-SDK/0.2.0 (Merczcord Technologies Ltd.)",
             hdx_read_only=True,
         )
         _HDX_CONFIGURED = True

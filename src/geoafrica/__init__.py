@@ -52,7 +52,7 @@ Quick Start
     geoafrica.configure(nasa_firms_key="YOUR_KEY_HERE")
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __author__ = "Merczcord Technologies Ltd."
 __email__ = "dev@merczcord.com"
 __license__ = "MIT"

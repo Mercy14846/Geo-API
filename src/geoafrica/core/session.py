@@ -81,7 +81,7 @@ def _build_session(use_cache: bool = True) -> requests.Session:
     session.mount("http://", adapter)
 
     session.headers.update({
-        "User-Agent": "GeoAfrica-SDK/0.1.0 (Merczcord Technologies Ltd.; https://github.com/Mercy14846/Geo-API)",
+        "User-Agent": "GeoAfrica-SDK/0.2.0 (Merczcord Technologies Ltd.; https://github.com/Mercy14846/Geo-API)",
         "Accept": "application/json, application/geo+json, */*",
     })
     return session
