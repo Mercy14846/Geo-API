@@ -259,36 +259,47 @@ def get_bbox(country: str) -> list[float]:
 # ---------------------------------------------------------------------------
 
 def _fetch_gadm(iso3: str, level: int, crs: str) -> gpd.GeoDataFrame:
-    """Download and parse GADM GeoJSON for a given ISO-3 code and admin level."""
+    """Download and parse GADM GeoPackage for a given ISO-3 code and admin level."""
     cfg = get_config()
-    cache_path = cfg.cache_dir / "boundaries" / f"gadm_{iso3}_{level}.gpkg"
+    cache_gpkg = cfg.cache_dir / "boundaries" / f"gadm41_{iso3}.gpkg"
 
-    if cache_path.exists():
-        return gpd.read_file(cache_path).to_crs(crs)
+    if not cache_gpkg.exists():
+        url = _GADM_GPKG_URL.format(iso=iso3)
+        with GeoAfricaSession() as s:
+            try:
+                s.download(url, str(cache_gpkg), show_progress=True)
+            except requests.HTTPError as e:
+                if e.response is not None and e.response.status_code == 404:
+                    raise DataNotFoundError(
+                        f"No GADM data found for '{iso3}'.",
+                        query=iso3,
+                    )
+                raise
 
-    url = _GADM_GEOJSON_URL.format(iso=iso3, level=level)
-    with GeoAfricaSession() as s:
+    # GADM 4.1 GeoPackages typically have layers named ADM_0, ADM_1, etc.
+    possible_layers = [f"ADM_{level}", f"ADM_ADM_{level}", f"gadm41_{iso3}_{level}"]
+    gdf = None
+    last_err = None
+
+    for layer in possible_layers:
         try:
-            resp = s.get(url)
-        except requests.HTTPError as e:
-            if e.response is not None and e.response.status_code == 404:
-                raise DataNotFoundError(
-                    f"No GADM data found for '{iso3}' at level {level}. "
-                    "Try a lower admin level.",
-                    query=f"{iso3}-level{level}",
-                )
-            raise
+            gdf = gpd.read_file(cache_gpkg, layer=layer)
+            break
+        except Exception as e:
+            last_err = e
+            continue
 
-    gdf = gpd.read_file(io.BytesIO(resp.content))
+    if gdf is None:
+        raise DataNotFoundError(
+            f"Level {level} data not found for '{iso3}' in GADM GeoPackage. "
+            f"Are you sure this level exists? (Details: {last_err})",
+            query=f"{iso3}-level{level}",
+        )
+
     if gdf.crs is None:
         gdf = gdf.set_crs("EPSG:4326")
-    gdf = gdf.to_crs(crs)
-
-    # Cache to GeoPackage
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    gdf.to_file(cache_path, driver="GPKG")
-
-    return gdf
+        
+    return gdf.to_crs(crs)
 
 
 def _fetch_hdx_boundaries(iso3: str, level: int, crs: str) -> gpd.GeoDataFrame:
