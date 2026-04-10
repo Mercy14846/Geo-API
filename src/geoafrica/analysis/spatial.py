@@ -17,16 +17,13 @@ Usage
 
 from __future__ import annotations
 
-from typing import Union, Optional
-
 import geopandas as gpd
-import pandas as pd
 from shapely.geometry import box
 
 
 def clip(
     gdf: gpd.GeoDataFrame,
-    mask: Union[gpd.GeoDataFrame, gpd.GeoSeries],
+    mask: gpd.GeoDataFrame | gpd.GeoSeries,
 ) -> gpd.GeoDataFrame:
     """
     Clip *gdf* to the extent of *mask*.

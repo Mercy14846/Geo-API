@@ -32,15 +32,13 @@ Usage
 from __future__ import annotations
 
 import json
-from typing import Optional, Union
 
 import geopandas as gpd
-import pandas as pd
-from shapely.geometry import Point, LineString, Polygon, MultiPolygon, shape
+from shapely.geometry import LineString, Point, Polygon
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError, InvalidBoundingBoxError
+from geoafrica.core.session import GeoAfricaSession
 
 # Overpass API endpoints (public mirrors)
 _OVERPASS_ENDPOINTS = [
@@ -143,7 +141,7 @@ def get_features_bbox(
 
 def get_roads(
     location: str,
-    road_type: Optional[str] = None,
+    road_type: str | None = None,
     timeout: int = 120,
 ) -> gpd.GeoDataFrame:
     """
@@ -214,7 +212,7 @@ def get_amenity(
 
 def get_buildings(
     location: str,
-    building_type: Optional[str] = None,
+    building_type: str | None = None,
     timeout: int = 180,
 ) -> gpd.GeoDataFrame:
     """
@@ -270,7 +268,7 @@ def _build_overpass_query(
 
 def _run_overpass_query(query: str) -> dict:
     """Execute an Overpass QL query, trying multiple endpoints."""
-    last_err: Optional[Exception] = None
+    last_err: Exception | None = None
     for endpoint in _OVERPASS_ENDPOINTS:
         try:
             with GeoAfricaSession() as s:

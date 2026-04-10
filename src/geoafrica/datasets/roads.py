@@ -18,17 +18,15 @@ Usage
 
 from __future__ import annotations
 
-from typing import Optional, List
-
 import geopandas as gpd
 import pandas as pd
 
-from geoafrica.datasets.osm import get_features, ROAD_TYPES
+from geoafrica.datasets.osm import ROAD_TYPES, get_features
 
 
 def get_network(
     location: str,
-    road_types: Optional[List[str]] = None,
+    road_types: list[str] | None = None,
     timeout: int = 180,
 ) -> gpd.GeoDataFrame:
     """
@@ -70,7 +68,7 @@ def get_network(
 def road_stats(
     country: str,
     level: int = 1,
-    road_types: Optional[List[str]] = None,
+    road_types: list[str] | None = None,
 ) -> pd.DataFrame:
     """
     Compute road length (km) per administrative unit.

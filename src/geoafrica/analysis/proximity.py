@@ -19,18 +19,15 @@ Usage
 
 from __future__ import annotations
 
-from typing import Optional, List
-
-import numpy as np
-import pandas as pd
 import geopandas as gpd
+import pandas as pd
 
 
 def nearest_facility(
     origins: gpd.GeoDataFrame,
     facilities: gpd.GeoDataFrame,
-    origin_label: Optional[str] = None,
-    facility_label: Optional[str] = None,
+    origin_label: str | None = None,
+    facility_label: str | None = None,
     n: int = 1,
 ) -> gpd.GeoDataFrame:
     """
@@ -97,7 +94,7 @@ def nearest_facility(
 
 def service_coverage(
     facilities: gpd.GeoDataFrame,
-    population_raster: "xarray.DataArray",
+    population_raster: xarray.DataArray,
     radius_km: float = 5.0,
 ) -> dict:
     """

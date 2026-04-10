@@ -33,14 +33,12 @@ Usage
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Union
 
 import pandas as pd
-import geopandas as gpd
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
+from geoafrica.core.session import GeoAfricaSession
 
 # CHIRPS base URLs
 _CHIRPS_MONTHLY = (
@@ -62,9 +60,9 @@ SUPPORTED_YEARS_CHIRPS = list(range(1981, 2025))
 def get_rainfall(
     country: str,
     year: int,
-    month: Optional[int] = None,
+    month: int | None = None,
     source: str = "chirps",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download and clip a rainfall raster for a country.
 
@@ -100,8 +98,8 @@ def get_rainfall(
 def get_chirps_bbox(
     bbox: list[float],
     year: int,
-    month: Optional[int] = None,
-) -> "xarray.DataArray":
+    month: int | None = None,
+) -> xarray.DataArray:
     """
     Download a CHIRPS rainfall raster for a bounding box.
 
@@ -118,8 +116,8 @@ def get_chirps_bbox(
     -------
     xarray.DataArray
     """
-    import xarray as xr
     import rioxarray  # noqa: F401
+    import xarray as xr
 
     path = _download_chirps(year, month, global_coverage=False)
     da = xr.open_dataarray(path, engine="rasterio")
@@ -175,7 +173,7 @@ def rainfall_anomaly(
     year: int,
     baseline_start: int = 1981,
     baseline_end: int = 2010,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Compute annual rainfall anomaly vs. a long-term baseline.
 
@@ -210,7 +208,6 @@ def rainfall_anomaly(
     if not baseline_arrays:
         raise DataNotFoundError(f"Could not compute baseline for '{country}'.")
 
-    import xarray as xr
     baseline_mean = np.nanmean(baseline_arrays, axis=0)
     anomaly = current.copy(data=current.values - baseline_mean)
     anomaly.name = f"rainfall_anomaly_{year}"
@@ -227,11 +224,12 @@ def rainfall_anomaly(
 def _chirps_for_country(
     country: str,
     year: int,
-    month: Optional[int],
-) -> "xarray.DataArray":
+    month: int | None,
+) -> xarray.DataArray:
     """Download + clip CHIRPS raster for a country boundary."""
-    import xarray as xr
     import rioxarray  # noqa: F401
+    import xarray as xr
+
     from geoafrica.datasets.boundaries import get_country
 
     path = _download_chirps(year, month, global_coverage=False)
@@ -258,7 +256,7 @@ def _chirps_for_country(
     return clipped
 
 
-def _download_chirps(year: int, month: Optional[int], global_coverage: bool = False) -> Path:
+def _download_chirps(year: int, month: int | None, global_coverage: bool = False) -> Path:
     """Download a CHIRPS TIF file and return the local path."""
     import gzip
     import shutil
@@ -305,8 +303,8 @@ def _download_chirps(year: int, month: Optional[int], global_coverage: bool = Fa
 def _era5_for_country(
     country: str,
     year: int,
-    month: Optional[int],
-) -> "xarray.DataArray":
+    month: int | None,
+) -> xarray.DataArray:
     """Fetch ERA5 data via CDS API (requires api key)."""
     cfg = get_config()
     key = cfg.get_api_key("COPERNICUS_CDS")

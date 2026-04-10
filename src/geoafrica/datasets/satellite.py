@@ -34,9 +34,6 @@ Usage
 
 from __future__ import annotations
 
-from typing import Optional, Union, List
-
-import geopandas as gpd
 import pandas as pd
 
 from geoafrica.core.exceptions import DataNotFoundError
@@ -65,14 +62,14 @@ COLLECTIONS = {
 
 def search(
     collection: str,
-    bbox: Optional[List[float]] = None,
-    country: Optional[str] = None,
-    location: Optional[str] = None,
+    bbox: list[float] | None = None,
+    country: str | None = None,
+    location: str | None = None,
     date_range: str = "2023-01-01/2023-12-31",
     max_cloud_cover: int = 20,
     limit: int = 10,
-    catalog: Optional[str] = None,
-) -> "pystac.ItemCollection":
+    catalog: str | None = None,
+) -> pystac.ItemCollection:
     """
     Search STAC catalogs for satellite imagery.
 
@@ -120,7 +117,7 @@ def search(
     if country and bbox is None:
         from geoafrica.datasets.boundaries import get_bbox
         bbox = get_bbox(country)
-        
+
     if location and bbox is None:
         import geopandas as gpd
         # Geocode the location directly using Nominatim (requires network)
@@ -128,7 +125,7 @@ def search(
         if gdf.empty or gdf["geometry"].iloc[0] is None:
             raise ValueError(f"Could not find coordinates for location: '{location}'")
         bounds = gdf.total_bounds # [minx, miny, maxx, maxy]
-        
+
         # If it's a single point rather than a region, buffer it slightly so STAC catches intersecting images
         if bounds[0] == bounds[2] and bounds[1] == bounds[3]:
             # ~10km buffer roughly (0.1 degrees)
@@ -168,9 +165,9 @@ def search(
 
 
 def load_rgb(
-    item: "pystac.Item",
+    item: pystac.Item,
     resolution: int = 10,
-) -> "xarray.Dataset":
+) -> xarray.Dataset:
     """
     Load an RGB (true colour) composite from a STAC item.
 

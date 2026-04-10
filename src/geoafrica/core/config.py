@@ -12,13 +12,11 @@ Keys can be set via:
 
 from __future__ import annotations
 
+import json
 import os
 import sys
-import json
 import warnings
 from pathlib import Path
-from typing import Optional
-
 
 # -------------------------------------------------------------------
 # Default paths
@@ -61,7 +59,7 @@ class GeoAfricaConfig:
 
     def __init__(
         self,
-        cache_dir: Optional[str | Path] = None,
+        cache_dir: str | Path | None = None,
         cache_ttl: int = 86400,
         timeout: int = 30,
         verbose: bool = False,
@@ -85,7 +83,7 @@ class GeoAfricaConfig:
     # Public helpers
     # ------------------------------------------------------------------
 
-    def get_api_key(self, provider: str) -> Optional[str]:
+    def get_api_key(self, provider: str) -> str | None:
         """Return the API key for *provider*, or None if not set."""
         env_var = ENV_KEYS.get(provider.upper())
         if env_var:
@@ -209,7 +207,7 @@ class GeoAfricaConfig:
 # -------------------------------------------------------------------
 # Module-level singleton (lazy init)
 # -------------------------------------------------------------------
-_default_config: Optional[GeoAfricaConfig] = None
+_default_config: GeoAfricaConfig | None = None
 
 
 def get_config() -> GeoAfricaConfig:

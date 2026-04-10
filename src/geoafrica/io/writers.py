@@ -9,20 +9,18 @@ Export GeoDataFrames to common formats.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Union
 
 import geopandas as gpd
-import pandas as pd
 
 
-def to_geojson(gdf: gpd.GeoDataFrame, path: Union[str, Path], indent: int = 2) -> str:
+def to_geojson(gdf: gpd.GeoDataFrame, path: str | Path, indent: int = 2) -> str:
     """Save GeoDataFrame to GeoJSON. Returns path."""
     path = str(path)
     gdf.to_crs("EPSG:4326").to_file(path, driver="GeoJSON")
     return path
 
 
-def to_shapefile(gdf: gpd.GeoDataFrame, path: Union[str, Path]) -> str:
+def to_shapefile(gdf: gpd.GeoDataFrame, path: str | Path) -> str:
     """Save GeoDataFrame to Shapefile (.shp). Returns path."""
     path = str(path)
     if not path.endswith(".shp"):
@@ -33,7 +31,7 @@ def to_shapefile(gdf: gpd.GeoDataFrame, path: Union[str, Path]) -> str:
 
 def to_geopackage(
     gdf: gpd.GeoDataFrame,
-    path: Union[str, Path],
+    path: str | Path,
     layer: str = "data",
 ) -> str:
     """Save GeoDataFrame to GeoPackage (.gpkg). Returns path."""
@@ -46,7 +44,7 @@ def to_geopackage(
 
 def to_csv(
     gdf: gpd.GeoDataFrame,
-    path: Union[str, Path],
+    path: str | Path,
     include_geometry: bool = True,
 ) -> str:
     """
@@ -72,7 +70,7 @@ def to_csv(
     return path
 
 
-def to_geoparquet(gdf: gpd.GeoDataFrame, path: Union[str, Path]) -> str:
+def to_geoparquet(gdf: gpd.GeoDataFrame, path: str | Path) -> str:
     """Save GeoDataFrame to GeoParquet (.parquet). Returns path."""
     path = str(path)
     if not path.endswith(".parquet"):
@@ -81,7 +79,7 @@ def to_geoparquet(gdf: gpd.GeoDataFrame, path: Union[str, Path]) -> str:
     return path
 
 
-def to_kml(gdf: gpd.GeoDataFrame, path: Union[str, Path]) -> str:
+def to_kml(gdf: gpd.GeoDataFrame, path: str | Path) -> str:
     """Save GeoDataFrame to KML. Returns path."""
     path = str(path)
     gdf.to_crs("EPSG:4326").to_file(path, driver="KML")

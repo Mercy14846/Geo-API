@@ -32,12 +32,10 @@ Usage
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
-from typing import Optional, Union
 
-import pandas as pd
 import geopandas as gpd
+import pandas as pd
 
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
@@ -66,8 +64,8 @@ def _ensure_hdx() -> None:
 def search(
     query: str,
     rows: int = 10,
-    organization: Optional[str] = None,
-    location: Optional[str] = None,
+    organization: str | None = None,
+    location: str | None = None,
 ) -> pd.DataFrame:
     """
     Search for datasets on the Humanitarian Data Exchange.
@@ -161,8 +159,8 @@ def get_dataset(dataset_id: str) -> pd.DataFrame:
 
 def download_dataset(
     dataset_id: str,
-    output_dir: Optional[str] = None,
-    resource_format: Optional[str] = None,
+    output_dir: str | None = None,
+    resource_format: str | None = None,
 ) -> list[str]:
     """
     Download all (or filtered) resources from an HDX dataset.
@@ -215,7 +213,7 @@ def download_dataset(
 def get_country_datasets(
     country: str,
     rows: int = 20,
-    data_type: Optional[str] = None,
+    data_type: str | None = None,
 ) -> pd.DataFrame:
     """
     List HDX datasets for a specific country.

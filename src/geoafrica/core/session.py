@@ -9,9 +9,9 @@ dataset modules to use.
 
 from __future__ import annotations
 
-import time
 import threading
-from typing import Optional, Dict, Any
+import time
+from typing import Any
 
 import requests
 import requests_cache
@@ -20,11 +20,10 @@ from urllib3.util.retry import Retry
 
 from geoafrica.core.config import get_config
 
-
 # -------------------------------------------------------------------
 # Per-provider rate limits (requests per second)
 # -------------------------------------------------------------------
-RATE_LIMITS: Dict[str, float] = {
+RATE_LIMITS: dict[str, float] = {
     "overpass-api.de": 0.5,   # 1 req / 2 sec
     "api.humdata.org": 2.0,
     "worldpop.org": 2.0,
@@ -33,7 +32,7 @@ RATE_LIMITS: Dict[str, float] = {
     "healthsites.io": 1.0,
 }
 
-_last_request_time: Dict[str, float] = {}
+_last_request_time: dict[str, float] = {}
 _lock = threading.Lock()
 
 
@@ -90,7 +89,7 @@ def _build_session(use_cache: bool = True) -> requests.Session:
 # -------------------------------------------------------------------
 # Singleton session
 # -------------------------------------------------------------------
-_session: Optional[requests.Session] = None
+_session: requests.Session | None = None
 
 
 def get_session(use_cache: bool = True) -> requests.Session:
@@ -122,7 +121,7 @@ class GeoAfricaSession:
         self._session = get_session(use_cache=use_cache)
         self._cfg = get_config()
 
-    def __enter__(self) -> "GeoAfricaSession":
+    def __enter__(self) -> GeoAfricaSession:
         return self
 
     def __exit__(self, *args: Any) -> None:
@@ -130,6 +129,7 @@ class GeoAfricaSession:
 
     def get(self, url: str, **kwargs: Any) -> requests.Response:
         from urllib.parse import urlparse
+
         from geoafrica.core.exceptions import RateLimitError
 
         host = urlparse(url).hostname or ""
@@ -147,6 +147,7 @@ class GeoAfricaSession:
 
     def post(self, url: str, **kwargs: Any) -> requests.Response:
         from urllib.parse import urlparse
+
         from geoafrica.core.exceptions import RateLimitError
 
         host = urlparse(url).hostname or ""
@@ -171,8 +172,8 @@ class GeoAfricaSession:
         str
             Absolute path to the downloaded file.
         """
-        import os
         from pathlib import Path
+
         from tqdm import tqdm
 
         dest = Path(dest_path)

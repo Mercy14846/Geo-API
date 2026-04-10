@@ -62,13 +62,13 @@ __url__ = "https://github.com/Mercy14846/Geo-API"
 # Lazy module imports — keeps cold start fast
 # ---------------------------------------------------------------------------
 
-from geoafrica.core.config import get_config, configure  # noqa: F401
-from geoafrica.core.exceptions import (               # noqa: F401
-    GeoAfricaError,
-    DataNotFoundError,
+from geoafrica.core.config import configure, get_config  # noqa: F401
+from geoafrica.core.exceptions import (  # noqa: F401
     APIKeyMissingError,
-    RateLimitError,
+    DataNotFoundError,
+    GeoAfricaError,
     InvalidBoundingBoxError,
+    RateLimitError,
     UnsupportedFormatError,
 )
 

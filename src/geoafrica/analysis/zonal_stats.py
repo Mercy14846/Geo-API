@@ -18,21 +18,19 @@ Usage
 
 from __future__ import annotations
 
-from typing import List, Optional, Union
-
+import geopandas as gpd
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 
 VALID_STATS = ["mean", "sum", "min", "max", "std", "count", "median", "range"]
 
 
 def compute(
-    raster: "xarray.DataArray",
+    raster: xarray.DataArray,
     zones: gpd.GeoDataFrame,
-    stats: Optional[List[str]] = None,
+    stats: list[str] | None = None,
     nodata: float = -9999,
-    zone_label_col: Optional[str] = None,
+    zone_label_col: str | None = None,
 ) -> pd.DataFrame:
     """
     Compute statistics of *raster* values within each polygon in *zones*.

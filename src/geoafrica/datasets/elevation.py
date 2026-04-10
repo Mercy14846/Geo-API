@@ -36,16 +36,12 @@ Usage
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Optional, Union, Tuple
-
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
-from geoafrica.core.exceptions import DataNotFoundError, InvalidBoundingBoxError
+from geoafrica.core.exceptions import InvalidBoundingBoxError
+from geoafrica.core.session import GeoAfricaSession
 
 _OPENTOPO_API = "https://portal.opentopography.org/API/globaldem"
 
@@ -66,7 +62,7 @@ def get_dem(
     country: str,
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a Digital Elevation Model raster for a country.
 
@@ -105,7 +101,7 @@ def get_dem_bbox(
     bbox: list[float],
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a DEM for a bounding box.
 
@@ -122,8 +118,8 @@ def get_dem_bbox(
     -------
     xarray.DataArray
     """
-    import xarray as xr
     import rioxarray  # noqa: F401
+    import xarray as xr
 
     if len(bbox) != 4:
         raise InvalidBoundingBoxError(bbox)
@@ -152,8 +148,8 @@ def get_dem_bbox(
 
 
 def terrain_profile(
-    start: Tuple[float, float],
-    end: Tuple[float, float],
+    start: tuple[float, float],
+    end: tuple[float, float],
     num_points: int = 100,
     source: str = "SRTMGL1",
 ) -> pd.DataFrame:
@@ -183,7 +179,6 @@ def terrain_profile(
     ... )
     >>> profile.plot(x="distance_km", y="elevation_m")
     """
-    from shapely.geometry import LineString
 
     start_lon, start_lat = start
     end_lon, end_lat = end
@@ -224,8 +219,8 @@ def terrain_profile(
 
 
 def compute_slope_aspect(
-    dem: "xarray.DataArray",
-) -> Tuple["xarray.DataArray", "xarray.DataArray"]:
+    dem: xarray.DataArray,
+) -> tuple[xarray.DataArray, xarray.DataArray]:
     """
     Compute slope (degrees) and aspect (degrees from north) from a DEM.
 
@@ -238,7 +233,6 @@ def compute_slope_aspect(
     -------
     tuple of (slope, aspect) — both xarray.DataArrays in degrees.
     """
-    import xarray as xr
 
     data = dem.squeeze().values.astype(float)
     data[data < -9990] = np.nan

@@ -26,17 +26,11 @@ Usage
 
 from __future__ import annotations
 
-import io
-from pathlib import Path
-from typing import Optional, Union
-
 import pandas as pd
-import geopandas as gpd
-import requests
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
+from geoafrica.core.session import GeoAfricaSession
 
 _WORLDPOP_API = "https://www.worldpop.org/rest/data"
 _WORLDPOP_BASE = "https://data.worldpop.org"
@@ -51,7 +45,7 @@ def get_grid(
     year: int = 2020,
     resolution: int = 1000,
     constrained: bool = False,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a WorldPop population grid raster for a country.
 
@@ -79,9 +73,9 @@ def get_grid(
     >>> da.plot()
     """
     try:
+        import rasterio
         import rioxarray  # noqa: F401
         import xarray as xr
-        import rasterio
     except ImportError as e:
         raise ImportError(
             f"Missing dependency: {e}. Install with: pip install rioxarray xarray rasterio"
@@ -89,7 +83,7 @@ def get_grid(
 
     from geoafrica.datasets.boundaries import _resolve_iso3
     iso3 = _resolve_iso3(country)
-    iso3_lower = iso3.lower()
+    iso3.lower()
 
     if year not in _SUPPORTED_YEARS:
         raise ValueError(f"Year must be in {_SUPPORTED_YEARS[0]}–{_SUPPORTED_YEARS[-1]}.")
@@ -97,9 +91,6 @@ def get_grid(
         raise ValueError("Resolution must be 100 or 1000 metres.")
 
     res_str = "1km" if resolution == 1000 else "100m"
-    constrained_str = "constrained" if constrained else "unconstrained"
-    filename = f"{iso3_lower}_{constrained_str}_100m_2020_UNadj.tif" if resolution == 100 else \
-               f"{iso3_lower}_{year}_1km_UNadj.tif"
 
     cfg = get_config()
     cache_path = cfg.cache_dir / "population" / f"{iso3}_{year}_{res_str}.tif"
@@ -231,7 +222,7 @@ def _build_worldpop_url(
     year: int,
     resolution: int,
     constrained: bool,
-) -> Optional[str]:
+) -> str | None:
     """Query the WorldPop REST API for a direct download URL."""
     res_str = "1km" if resolution == 1000 else "100m"
     constrained_str = "constrained" if constrained else "unconstrained"

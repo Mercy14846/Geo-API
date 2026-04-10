@@ -23,10 +23,7 @@ Usage
 
 from __future__ import annotations
 
-from typing import Optional, Union, List
-
 import geopandas as gpd
-import pandas as pd
 
 
 def quick_map(
@@ -34,10 +31,10 @@ def quick_map(
     color: str = "#2196F3",
     opacity: float = 0.7,
     weight: float = 2,
-    tooltip_cols: Optional[List[str]] = None,
+    tooltip_cols: list[str] | None = None,
     zoom_start: int = 6,
-    title: Optional[str] = None,
-) -> "folium.Map":
+    title: str | None = None,
+) -> folium.Map:
     """
     Create an interactive Leaflet map from a GeoDataFrame.
 
@@ -71,7 +68,7 @@ def quick_map(
     """
     try:
         import folium
-        from folium import GeoJson, Tooltip, LayerControl
+        from folium import GeoJson, LayerControl, Tooltip
     except ImportError:
         raise ImportError("Install folium: pip install folium")
 
@@ -139,12 +136,12 @@ def quick_map(
 def choropleth(
     gdf: gpd.GeoDataFrame,
     column: str,
-    title: Optional[str] = None,
+    title: str | None = None,
     cmap: str = "YlOrRd",
     bins: int = 7,
-    tooltip_cols: Optional[List[str]] = None,
-    legend_name: Optional[str] = None,
-) -> "folium.Map":
+    tooltip_cols: list[str] | None = None,
+    legend_name: str | None = None,
+) -> folium.Map:
     """
     Create a choropleth map colouring polygons by a numeric column.
 
@@ -175,8 +172,8 @@ def choropleth(
     >>> m = viz.choropleth(states.merge(stats), column="population")
     """
     try:
-        import folium
         import branca.colormap as cm
+        import folium
     except ImportError:
         raise ImportError("Install folium and branca: pip install folium")
 
@@ -231,13 +228,13 @@ def choropleth(
 
 
 def add_layer(
-    m: "folium.Map",
+    m: folium.Map,
     gdf: gpd.GeoDataFrame,
     name: str = "Layer",
     color: str = "#E91E63",
     opacity: float = 0.7,
-    tooltip_cols: Optional[List[str]] = None,
-) -> "folium.Map":
+    tooltip_cols: list[str] | None = None,
+) -> folium.Map:
     """
     Add an additional GeoDataFrame layer to an existing Folium map.
 
@@ -306,9 +303,9 @@ def add_layer(
 
 def fire_map(
     fire_gdf: gpd.GeoDataFrame,
-    country: Optional[str] = None,
+    country: str | None = None,
     title: str = "Active Fire Detections",
-) -> "folium.Map":
+) -> folium.Map:
     """
     Specialised fire detection map with heat-map style rendering.
 
@@ -358,7 +355,7 @@ def fire_map(
 # Internal helpers
 # ---------------------------------------------------------------------------
 
-def _add_branding(m: "folium.Map", title: Optional[str] = None) -> None:
+def _add_branding(m: folium.Map, title: str | None = None) -> None:
     """Add a Merczcord Technologies branding panel to the map."""
     try:
         import folium

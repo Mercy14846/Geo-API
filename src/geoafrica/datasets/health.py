@@ -31,14 +31,13 @@ Usage
 from __future__ import annotations
 
 import math
-from typing import Optional
 
 import geopandas as gpd
 import pandas as pd
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
+from geoafrica.core.session import GeoAfricaSession
 
 _HEALTHSITES_API = "https://healthsites.io/api/v2/facilities/"
 _WHO_GHO_API = "https://ghoapi.azureedge.net/api"
@@ -52,7 +51,7 @@ FACILITY_TYPES = [
 
 def get_facilities(
     country: str,
-    facility_type: Optional[str] = None,
+    facility_type: str | None = None,
     source: str = "healthsites",
     page_size: int = 1000,
 ) -> gpd.GeoDataFrame:
@@ -93,7 +92,7 @@ def nearest_to(
     lon: float,
     country: str,
     n: int = 5,
-    facility_type: Optional[str] = None,
+    facility_type: str | None = None,
 ) -> gpd.GeoDataFrame:
     """
     Find the *n* nearest health facilities to a given coordinate.
@@ -143,7 +142,7 @@ def nearest_to(
 def count_by_admin(
     country: str,
     level: int = 1,
-    facility_type: Optional[str] = None,
+    facility_type: str | None = None,
 ) -> pd.DataFrame:
     """
     Count health facilities per administrative unit.
@@ -162,7 +161,6 @@ def count_by_admin(
     DataFrame with columns: admin_name, count, area_km2, facilities_per_100k
     """
     from geoafrica.datasets.boundaries import get_admin
-    from geoafrica.datasets.population import get_stats
 
     boundaries = get_admin(country, level=level)
     facilities = get_facilities(country, facility_type=facility_type)
@@ -201,11 +199,11 @@ def count_by_admin(
 
 def _fetch_healthsites(
     country: str,
-    facility_type: Optional[str],
+    facility_type: str | None,
     page_size: int,
 ) -> gpd.GeoDataFrame:
     """Fetch facilities from HealthSites.io API with pagination."""
-    from geoafrica.datasets.boundaries import _resolve_iso3, _COUNTRY_NAME_TO_ISO2
+    from geoafrica.datasets.boundaries import _COUNTRY_NAME_TO_ISO2, _resolve_iso3
 
     # Resolve to ISO-2 for HealthSites API
     c = country.strip()
@@ -289,13 +287,12 @@ def _parse_healthsites_records(records: list) -> gpd.GeoDataFrame:
     return gpd.GeoDataFrame(rows, geometry="geometry", crs="EPSG:4326")
 
 
-def _fetch_osm_health(country: str, facility_type: Optional[str]) -> gpd.GeoDataFrame:
+def _fetch_osm_health(country: str, facility_type: str | None) -> gpd.GeoDataFrame:
     """Fetch health facilities from OSM via Overpass as a fallback."""
     from geoafrica.datasets.osm import get_features
 
-    osm_tags: dict = {"healthcare": True} if not facility_type else {"healthcare": facility_type}
     if facility_type in ("hospital", "clinic"):
-        osm_tags = {"amenity": facility_type}
+        pass
 
     try:
         gdf = get_features(country, tags={"amenity": ["hospital", "clinic", "health_centre", "pharmacy"]})

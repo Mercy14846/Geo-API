@@ -31,15 +31,14 @@ Usage
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, date
-from typing import Optional, Union
+from datetime import date, datetime
 
 import geopandas as gpd
 import pandas as pd
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
-from geoafrica.core.exceptions import APIKeyMissingError, DataNotFoundError, InvalidBoundingBoxError
+from geoafrica.core.exceptions import APIKeyMissingError, InvalidBoundingBoxError
+from geoafrica.core.session import GeoAfricaSession
 
 _FIRMS_BASE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
 _FIRMS_COUNTRY_BASE = "https://firms.modaps.eosdis.nasa.gov/api/country/csv"
@@ -145,8 +144,8 @@ def get_country(
 
 def get_historical(
     country: str,
-    start: Union[str, date],
-    end: Union[str, date],
+    start: str | date,
+    end: str | date,
     sensor: str = "VIIRS_SNPP_SP",
 ) -> gpd.GeoDataFrame:
     """
@@ -266,7 +265,6 @@ def _parse_firms_csv(content: str, sensor: str = "") -> gpd.GeoDataFrame:
 
 def _df_to_geodataframe(df: pd.DataFrame, sensor: str = "") -> gpd.GeoDataFrame:
     """Convert a FIRMS DataFrame to a GeoDataFrame."""
-    from shapely.geometry import Point
 
     if "latitude" not in df.columns or "longitude" not in df.columns:
         return gpd.GeoDataFrame(df, geometry=[], crs="EPSG:4326")

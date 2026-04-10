@@ -9,20 +9,18 @@ Read geospatial files from local disk or remote URLs.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Union
 
 import geopandas as gpd
-
 
 SUPPORTED_VECTOR_FORMATS = [".geojson", ".json", ".shp", ".gpkg", ".kml", ".fgb", ".parquet"]
 SUPPORTED_RASTER_FORMATS = [".tif", ".tiff", ".nc", ".nc4", ".hdf", ".h5"]
 
 
 def read(
-    path_or_url: Union[str, Path],
-    layer: Optional[str] = None,
+    path_or_url: str | Path,
+    layer: str | None = None,
     crs: str = "EPSG:4326",
-) -> Union[gpd.GeoDataFrame, "xarray.DataArray"]:
+) -> gpd.GeoDataFrame | xarray.DataArray:
     """
     Universal reader — loads vector or raster data from a local path or URL.
 
@@ -57,7 +55,7 @@ def read(
         return _read_vector(path, layer=layer, crs=crs)
 
 
-def _read_vector(path: str, layer: Optional[str], crs: str) -> gpd.GeoDataFrame:
+def _read_vector(path: str, layer: str | None, crs: str) -> gpd.GeoDataFrame:
     kwargs = {}
     if layer:
         kwargs["layer"] = layer
@@ -65,7 +63,6 @@ def _read_vector(path: str, layer: Optional[str], crs: str) -> gpd.GeoDataFrame:
     # Handle GeoParquet
     if path.endswith(".parquet"):
         try:
-            import pandas as pd
             gdf = gpd.read_parquet(path)
         except Exception:
             raise ValueError(f"Could not read GeoParquet file: {path}")
@@ -77,10 +74,10 @@ def _read_vector(path: str, layer: Optional[str], crs: str) -> gpd.GeoDataFrame:
     return gdf.to_crs(crs)
 
 
-def _read_raster(path: str) -> "xarray.DataArray":
+def _read_raster(path: str) -> xarray.DataArray:
     try:
-        import xarray as xr
         import rioxarray  # noqa: F401
+        import xarray as xr
     except ImportError:
         raise ImportError("Install: pip install rioxarray xarray rasterio")
 
@@ -91,7 +88,7 @@ def _read_raster(path: str) -> "xarray.DataArray":
 
 
 def read_csv_geo(
-    path: Union[str, Path],
+    path: str | Path,
     lat_col: str = "latitude",
     lon_col: str = "longitude",
     crs: str = "EPSG:4326",

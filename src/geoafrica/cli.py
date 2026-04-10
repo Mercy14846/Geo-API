@@ -19,16 +19,11 @@ Usage
 from __future__ import annotations
 
 import sys
-import json
 from pathlib import Path
-from typing import Optional
 
 import click
 from rich.console import Console
 from rich.table import Table
-from rich.panel import Panel
-from rich.text import Text
-from rich import print as rprint
 
 console = Console()
 
@@ -100,7 +95,7 @@ def config():
 @click.argument("value")
 def config_set(key: str, value: str):
     """Set an API key or config value. Example: geoafrica config set GEOAFRICA_FIRMS_KEY abc123"""
-    from geoafrica.core.config import get_config, ENV_KEYS
+    from geoafrica.core.config import ENV_KEYS, get_config
     cfg = get_config()
 
     # Find provider by env var name or partial match
@@ -131,7 +126,7 @@ def config_show():
 @click.option("--level", "-l", default=1, type=int, show_default=True, help="Admin level (0–3)")
 @click.option("--output", "-o", default=None, help="Output file path (.geojson, .gpkg, .shp, .csv)")
 @click.option("--source", default="gadm", show_default=True, help="Data source: gadm or hdx")
-def boundaries(country: str, level: int, output: Optional[str], source: str):
+def boundaries(country: str, level: int, output: str | None, source: str):
     """Download administrative boundaries for a country.
 
     Example: geoafrica boundaries nigeria --level 1 --output states.geojson
@@ -159,7 +154,7 @@ def osm():
 @click.option("--type", "ftype", default="hospital", show_default=True,
               help="Facility type: hospital, school, clinic, bank, market, etc.")
 @click.option("--output", "-o", default=None)
-def osm_facilities(location: str, ftype: str, output: Optional[str]):
+def osm_facilities(location: str, ftype: str, output: str | None):
     """Fetch facilities from OpenStreetMap.
 
     Example: geoafrica osm facilities --location "Kenya" --type hospital
@@ -176,7 +171,7 @@ def osm_facilities(location: str, ftype: str, output: Optional[str]):
 @click.option("--location", "-l", required=True)
 @click.option("--type", "road_type", default=None, help="Road type: primary, secondary, etc.")
 @click.option("--output", "-o", default=None)
-def osm_roads(location: str, road_type: Optional[str], output: Optional[str]):
+def osm_roads(location: str, road_type: str | None, output: str | None):
     """Fetch road network from OpenStreetMap."""
     from geoafrica.datasets.osm import get_roads
     with console.status(f"[cyan]Fetching roads in {location}...[/cyan]"):
@@ -201,7 +196,7 @@ def fire():
 @click.option("--days", "-d", default=7, show_default=True, type=int)
 @click.option("--sensor", default="VIIRS_SNPP", show_default=True)
 @click.option("--output", "-o", default=None)
-def fire_active(country: Optional[str], bbox: Optional[str], days: int, sensor: str, output: Optional[str]):
+def fire_active(country: str | None, bbox: str | None, days: int, sensor: str, output: str | None):
     """Fetch near real-time active fire detections.
 
     Example: geoafrica fire active --country Nigeria --days 3
@@ -238,7 +233,7 @@ def elevation():
 @click.option("--source", "-s", default="SRTMGL1", show_default=True,
               help="DEM source: SRTMGL1, COP30, AW3D30, NASADEM")
 @click.option("--output", "-o", default=None, help="Output .tif file path")
-def elevation_dem(country: str, source: str, output: Optional[str]):
+def elevation_dem(country: str, source: str, output: str | None):
     """Download a DEM for a country.
 
     Example: geoafrica elevation dem --country Rwanda --source COP30
@@ -271,7 +266,7 @@ def elevation_sources():
 @main.command()
 @click.option("--region", "-r", default=None,
               help="Filter by region: africa, americas, asia, europe")
-def countries(region: Optional[str]):
+def countries(region: str | None):
     """List supported countries."""
     from geoafrica.datasets.boundaries import list_countries
     df = list_countries(region=region)
@@ -291,7 +286,6 @@ def countries(region: Optional[str]):
 
 def _print_gdf_preview(gdf, n: int = 5):
     """Print a rich table preview of a GeoDataFrame."""
-    import geopandas as gpd
     cols = [c for c in gdf.columns if c != "geometry"][:6]
     if not cols:
         return
@@ -303,11 +297,11 @@ def _print_gdf_preview(gdf, n: int = 5):
     console.print(table)
 
 
-def _save_output(gdf, output: Optional[str], default_name: str):
+def _save_output(gdf, output: str | None, default_name: str):
     """Save GeoDataFrame to file based on extension."""
-    from geoafrica.io.writers import to_geojson, to_shapefile, to_geopackage, to_csv
+    from geoafrica.io.writers import to_csv, to_geojson, to_geopackage, to_shapefile
     if output is None:
-        console.print(f"[dim]No output file specified. Use --output to save.[/dim]")
+        console.print("[dim]No output file specified. Use --output to save.[/dim]")
         return
     ext = Path(output).suffix.lower()
     if ext == ".geojson" or ext == ".json":

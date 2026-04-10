@@ -34,19 +34,16 @@ Usage
 
 from __future__ import annotations
 
-import io
 import zipfile
-import tempfile
 from pathlib import Path
-from typing import Optional, List, Union
 
 import geopandas as gpd
 import pandas as pd
 import requests
 
-from geoafrica.core.session import GeoAfricaSession
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
+from geoafrica.core.session import GeoAfricaSession
 
 # ---------------------------------------------------------------------------
 # GADM — base URL for GeoJSON API
@@ -214,7 +211,7 @@ def get_by_iso(
     return get_admin(iso_code, level=level, source=source)
 
 
-def list_countries(region: Optional[str] = None) -> pd.DataFrame:
+def list_countries(region: str | None = None) -> pd.DataFrame:
     """
     Return a DataFrame of supported countries.
 
@@ -298,15 +295,15 @@ def _fetch_gadm(iso3: str, level: int, crs: str) -> gpd.GeoDataFrame:
 
     if gdf.crs is None:
         gdf = gdf.set_crs("EPSG:4326")
-        
+
     return gdf.to_crs(crs)
 
 
 def _fetch_hdx_boundaries(iso3: str, level: int, crs: str) -> gpd.GeoDataFrame:
     """Fetch boundaries from HDX using the hdx-python-api."""
     try:
-        from hdx.hdx_configuration import Configuration
         from hdx.data.dataset import Dataset
+        from hdx.hdx_configuration import Configuration
     except ImportError:
         raise ImportError(
             "hdx-python-api is required for HDX source. "
