@@ -62,7 +62,7 @@ def get_rainfall(
     year: int,
     month: int | None = None,
     source: str = "chirps",
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Download and clip a rainfall raster for a country.
 
@@ -99,7 +99,7 @@ def get_chirps_bbox(
     bbox: list[float],
     year: int,
     month: int | None = None,
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Download a CHIRPS rainfall raster for a bounding box.
 
@@ -173,7 +173,7 @@ def rainfall_anomaly(
     year: int,
     baseline_start: int = 1981,
     baseline_end: int = 2010,
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Compute annual rainfall anomaly vs. a long-term baseline.
 
@@ -225,7 +225,7 @@ def _chirps_for_country(
     country: str,
     year: int,
     month: int | None,
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """Download + clip CHIRPS raster for a country boundary."""
     import rioxarray  # noqa: F401
     import xarray as xr
@@ -304,7 +304,7 @@ def _era5_for_country(
     country: str,
     year: int,
     month: int | None,
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """Fetch ERA5 data via CDS API (requires api key)."""
     cfg = get_config()
     key = cfg.get_api_key("COPERNICUS_CDS")
