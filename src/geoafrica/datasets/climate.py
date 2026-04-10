@@ -36,6 +36,11 @@ from pathlib import Path
 
 import pandas as pd
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
 from geoafrica.core.session import GeoAfricaSession
