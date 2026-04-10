@@ -32,6 +32,11 @@ from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
 from geoafrica.core.session import GeoAfricaSession
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 _WORLDPOP_API = "https://www.worldpop.org/rest/data"
 _WORLDPOP_BASE = "https://data.worldpop.org"
 
@@ -45,7 +50,7 @@ def get_grid(
     year: int = 2020,
     resolution: int = 1000,
     constrained: bool = False,
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Download a WorldPop population grid raster for a country.
 
@@ -73,7 +78,6 @@ def get_grid(
     >>> da.plot()
     """
     try:
-        import rasterio
         import rioxarray  # noqa: F401
         import xarray as xr
     except ImportError as e:
@@ -207,7 +211,9 @@ def available_years(country: str) -> list[int]:
                 params={"iso3": iso3, "popyear": "all"},
             )
             data = resp.json()
-            years = sorted({int(d.get("popyear", 0)) for d in data.get("data", []) if d.get("popyear")})
+            years = sorted(
+                {int(d.get("popyear", 0)) for d in data.get("data", []) if d.get("popyear")}
+            )
             return years if years else _SUPPORTED_YEARS
         except Exception:
             return _SUPPORTED_YEARS
