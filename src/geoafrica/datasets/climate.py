@@ -33,10 +33,9 @@ Usage
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pandas as pd
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import xarray
@@ -51,8 +50,7 @@ _CHIRPS_MONTHLY = (
     "chirps-v2.0.{year}.{month:02d}.tif.gz"
 )
 _CHIRPS_ANNUAL = (
-    "https://data.chc.ucsb.edu/products/CHIRPS-2.0/africa_annual/tifs/"
-    "chirps-v2.0.{year}.tif"
+    "https://data.chc.ucsb.edu/products/CHIRPS-2.0/africa_annual/tifs/chirps-v2.0.{year}.tif"
 )
 _CHIRPS_GLOBAL_MONTHLY = (
     "https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/tifs/"
@@ -67,7 +65,7 @@ def get_rainfall(
     year: int,
     month: int | None = None,
     source: str = "chirps",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download and clip a rainfall raster for a country.
 
@@ -104,7 +102,7 @@ def get_chirps_bbox(
     bbox: list[float],
     year: int,
     month: int | None = None,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a CHIRPS rainfall raster for a bounding box.
 
@@ -164,12 +162,14 @@ def monthly_series(
             mean_val = float("nan")
             max_val = float("nan")
 
-        records.append({
-            "month": m,
-            "month_name": pd.Timestamp(year=year, month=m, day=1).strftime("%B"),
-            "mean_rainfall_mm": round(mean_val, 2),
-            "max_rainfall_mm": round(max_val, 2),
-        })
+        records.append(
+            {
+                "month": m,
+                "month_name": pd.Timestamp(year=year, month=m, day=1).strftime("%B"),
+                "mean_rainfall_mm": round(mean_val, 2),
+                "max_rainfall_mm": round(max_val, 2),
+            }
+        )
     return pd.DataFrame(records)
 
 
@@ -178,7 +178,7 @@ def rainfall_anomaly(
     year: int,
     baseline_start: int = 1981,
     baseline_end: int = 2010,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Compute annual rainfall anomaly vs. a long-term baseline.
 
@@ -226,11 +226,12 @@ def rainfall_anomaly(
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+
 def _chirps_for_country(
     country: str,
     year: int,
     month: int | None,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """Download + clip CHIRPS raster for a country boundary."""
     import rioxarray  # noqa: F401
     import xarray as xr
@@ -309,7 +310,7 @@ def _era5_for_country(
     country: str,
     year: int,
     month: int | None,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """Fetch ERA5 data via CDS API (requires api key)."""
     cfg = get_config()
     key = cfg.get_api_key("COPERNICUS_CDS")
@@ -319,12 +320,7 @@ def _era5_for_country(
             "Register at https://cds.climate.copernicus.eu/ and run:\n"
             "  geoafrica config set COPERNICUS_CDS <your_key>"
         )
-    try:
-        import cdsapi
-    except ImportError:
-        raise ImportError("Install cdsapi: pip install geoafrica[climate]")
 
     raise NotImplementedError(
-        "ERA5 direct download is available via cdsapi. "
-        "Use CHIRPS source for automatic access."
+        "ERA5 direct download is available via cdsapi. Use CHIRPS source for automatic access."
     )

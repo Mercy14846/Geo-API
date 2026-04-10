@@ -50,6 +50,7 @@ def _ensure_hdx() -> None:
         return
     try:
         from hdx.hdx_configuration import Configuration
+
         Configuration.create(
             hdx_site="prod",
             user_agent="GeoAfrica-SDK/0.2.0 (Merczcord Technologies Ltd.)",
@@ -103,17 +104,21 @@ def search(
 
     records = []
     for ds in datasets:
-        records.append({
-            "title": ds.get("title", ""),
-            "name": ds.get("name", ""),
-            "organization": ds.get_organization().get("title", "") if ds.get("organization") else "",
-            "date_modified": ds.get("last_modified", ""),
-            "date_created": ds.get("metadata_created", ""),
-            "num_resources": ds.get("num_resources", 0),
-            "license": ds.get("license_title", ""),
-            "url": f"https://data.humdata.org/dataset/{ds.get('name', '')}",
-            "hdx_id": ds.get("id", ""),
-        })
+        records.append(
+            {
+                "title": ds.get("title", ""),
+                "name": ds.get("name", ""),
+                "organization": ds.get_organization().get("title", "")
+                if ds.get("organization")
+                else "",
+                "date_modified": ds.get("last_modified", ""),
+                "date_created": ds.get("metadata_created", ""),
+                "num_resources": ds.get("num_resources", 0),
+                "license": ds.get("license_title", ""),
+                "url": f"https://data.humdata.org/dataset/{ds.get('name', '')}",
+                "hdx_id": ds.get("id", ""),
+            }
+        )
 
     return pd.DataFrame(records)
 
@@ -144,15 +149,17 @@ def get_dataset(dataset_id: str) -> pd.DataFrame:
 
     records = []
     for resource in ds.get_resources():
-        records.append({
-            "resource_name": resource.get("name", ""),
-            "resource_id": resource.get("id", ""),
-            "format": resource.get("format", ""),
-            "size_bytes": resource.get("size", 0),
-            "url": resource.get("url", ""),
-            "description": resource.get("description", ""),
-            "last_modified": resource.get("last_modified", ""),
-        })
+        records.append(
+            {
+                "resource_name": resource.get("name", ""),
+                "resource_id": resource.get("id", ""),
+                "format": resource.get("format", ""),
+                "size_bytes": resource.get("size", 0),
+                "url": resource.get("url", ""),
+                "description": resource.get("description", ""),
+                "last_modified": resource.get("last_modified", ""),
+            }
+        )
 
     return pd.DataFrame(records)
 

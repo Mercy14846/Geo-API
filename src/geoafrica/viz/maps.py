@@ -93,10 +93,7 @@ def quick_map(
 
     # Tooltip columns
     if tooltip_cols is None:
-        tooltip_cols = [
-            c for c in gdf.columns
-            if c != "geometry" and gdf[c].dtype == object
-        ][:4]
+        tooltip_cols = [c for c in gdf.columns if c != "geometry" and gdf[c].dtype == object][:4]
 
     # Determine style based on geometry type
     geom_type = gdf.geometry.geom_type.iloc[0] if not gdf.empty else "Point"
@@ -105,9 +102,7 @@ def quick_map(
         for _, row in gdf.iterrows():
             if row.geometry is None:
                 continue
-            tooltip_text = "<br>".join(
-                f"<b>{c}:</b> {row.get(c, '')}" for c in tooltip_cols
-            )
+            tooltip_text = "<br>".join(f"<b>{c}:</b> {row.get(c, '')}" for c in tooltip_cols)
             folium.CircleMarker(
                 location=[row.geometry.y, row.geometry.x],
                 radius=5,
@@ -121,7 +116,8 @@ def quick_map(
         gdf_wgs = gdf.to_crs("EPSG:4326") if gdf.crs != "EPSG:4326" else gdf
         tooltip = (
             folium.GeoJsonTooltip(fields=tooltip_cols, aliases=tooltip_cols)
-            if tooltip_cols else None
+            if tooltip_cols
+            else None
         )
 
         folium.GeoJson(
@@ -277,9 +273,7 @@ def add_layer(
         for _, row in gdf_wgs.iterrows():
             if row.geometry is None:
                 continue
-            tooltip_text = "<br>".join(
-                f"<b>{c}:</b> {row.get(c, '')}" for c in tooltip_cols
-            )
+            tooltip_text = "<br>".join(f"<b>{c}:</b> {row.get(c, '')}" for c in tooltip_cols)
             folium.CircleMarker(
                 location=[row.geometry.y, row.geometry.x],
                 radius=5,
@@ -349,6 +343,7 @@ def fire_map(
 
     if country:
         from geoafrica.datasets.boundaries import get_country
+
         boundary = get_country(country)
         folium.GeoJson(
             boundary.__geo_interface__,
@@ -362,10 +357,12 @@ def fire_map(
 # Internal helpers
 # ---------------------------------------------------------------------------
 
+
 def _add_branding(m: folium.Map, title: str | None = None) -> None:
     """Add a Merczcord Technologies branding panel to the map."""
     try:
         import folium
+
         brand_html = """
         <div style="
             position: fixed;

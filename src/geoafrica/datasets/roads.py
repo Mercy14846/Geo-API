@@ -107,11 +107,15 @@ def road_stats(
         clipped = roads_proj.clip(admin_row.geometry)
         length_km = clipped.geometry.length.sum() / 1000
         area_km2 = admin_row.geometry.area / 1e6
-        records.append({
-            "admin_name": admin_row.get(name_col, ""),
-            "road_length_km": round(length_km, 2),
-            "area_km2": round(area_km2, 2),
-            "road_density_km_per_km2": round(length_km / area_km2, 4) if area_km2 > 0 else 0,
-        })
+        records.append(
+            {
+                "admin_name": admin_row.get(name_col, ""),
+                "road_length_km": round(length_km, 2),
+                "area_km2": round(area_km2, 2),
+                "road_density_km_per_km2": round(length_km / area_km2, 4) if area_km2 > 0 else 0,
+            }
+        )
 
-    return pd.DataFrame(records).sort_values("road_length_km", ascending=False).reset_index(drop=True)
+    return (
+        pd.DataFrame(records).sort_values("road_length_km", ascending=False).reset_index(drop=True)
+    )

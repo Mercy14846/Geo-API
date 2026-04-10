@@ -114,6 +114,7 @@ def read_csv_geo(
     GeoDataFrame with Point geometries.
     """
     import pandas as pd
+
     df = pd.read_csv(path)
     if lat_col not in df.columns or lon_col not in df.columns:
         raise ValueError(f"Columns '{lat_col}' and '{lon_col}' not found in CSV.")

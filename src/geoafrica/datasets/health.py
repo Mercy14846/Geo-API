@@ -43,9 +43,16 @@ _HEALTHSITES_API = "https://healthsites.io/api/v2/facilities/"
 _WHO_GHO_API = "https://ghoapi.azureedge.net/api"
 
 FACILITY_TYPES = [
-    "hospital", "clinic", "health_centre", "health_post",
-    "pharmacy", "laboratory", "dentist", "maternity",
-    "dispensary", "health_facility",
+    "hospital",
+    "clinic",
+    "health_centre",
+    "health_post",
+    "pharmacy",
+    "laboratory",
+    "dentist",
+    "maternity",
+    "dispensary",
+    "health_facility",
 ]
 
 
@@ -187,15 +194,16 @@ def count_by_admin(
         on="admin_name",
         how="left",
     )
-    result["facilities_per_1000km2"] = (
-        result["facility_count"] / result["area_km2"] * 1000
-    ).round(2)
+    result["facilities_per_1000km2"] = (result["facility_count"] / result["area_km2"] * 1000).round(
+        2
+    )
     return result.sort_values("facility_count", ascending=False).reset_index(drop=True)
 
 
 # ---------------------------------------------------------------------------
 # Internal fetch functions
 # ---------------------------------------------------------------------------
+
 
 def _fetch_healthsites(
     country: str,
@@ -209,13 +217,13 @@ def _fetch_healthsites(
     c = country.strip()
     if len(c) == 3:
         iso2 = next(
-            (k for k, v in {**{v: k for k, v in _COUNTRY_NAME_TO_ISO2.items()}}.items()),
-            None
+            (k for k, v in {**{v: k for k, v in _COUNTRY_NAME_TO_ISO2.items()}}.items()), None
         )
     iso3 = _resolve_iso3(country)
 
     # map ISO3 → ISO2
     from geoafrica.datasets.boundaries import _ISO2_TO_ISO3
+
     iso2 = next((k for k, v in _ISO2_TO_ISO3.items() if v == iso3), iso3[:2])
 
     cfg = get_config()
@@ -272,15 +280,17 @@ def _parse_healthsites_records(records: list) -> gpd.GeoDataFrame:
         coords = loc.get("coordinates") or [None, None]
         if None in coords:
             continue
-        rows.append({
-            "name": r.get("name", ""),
-            "facility_type": r.get("facility_type", ""),
-            "osm_type": r.get("osm_type", ""),
-            "osm_id": r.get("osm_id", ""),
-            "country": r.get("country", ""),
-            "source": "HealthSites.io",
-            "geometry": Point(coords[0], coords[1]),
-        })
+        rows.append(
+            {
+                "name": r.get("name", ""),
+                "facility_type": r.get("facility_type", ""),
+                "osm_type": r.get("osm_type", ""),
+                "osm_id": r.get("osm_id", ""),
+                "country": r.get("country", ""),
+                "source": "HealthSites.io",
+                "geometry": Point(coords[0], coords[1]),
+            }
+        )
 
     if not rows:
         return gpd.GeoDataFrame(geometry=[], crs="EPSG:4326")
@@ -295,7 +305,9 @@ def _fetch_osm_health(country: str, facility_type: str | None) -> gpd.GeoDataFra
         pass
 
     try:
-        gdf = get_features(country, tags={"amenity": ["hospital", "clinic", "health_centre", "pharmacy"]})
+        gdf = get_features(
+            country, tags={"amenity": ["hospital", "clinic", "health_centre", "pharmacy"]}
+        )
         gdf["source"] = "OpenStreetMap"
         return gdf
     except Exception:

@@ -48,7 +48,7 @@ SENSORS = {
     "VIIRS_SNPP": "VIIRS_SNPP_NRT",
     "VIIRS_NOAA20": "VIIRS_NOAA20_NRT",
     "MODIS": "MODIS_NRT",
-    "VIIRS_SNPP_SP": "VIIRS_SNPP_SP",   # Standard processing (archive)
+    "VIIRS_SNPP_SP": "VIIRS_SNPP_SP",  # Standard processing (archive)
 }
 
 DEFAULT_SENSOR = "VIIRS_SNPP"
@@ -129,6 +129,7 @@ def get_country(
     >>> ng_fires = fire.get_country("Nigeria", days=3)
     """
     from geoafrica.datasets.boundaries import _resolve_iso3
+
     iso3 = _resolve_iso3(country)
     api_key = _get_firms_key()
     product = SENSORS.get(sensor.upper(), sensor)
@@ -174,6 +175,7 @@ def get_historical(
         raise ValueError("Date range cannot exceed 1 year for historical queries.")
 
     from geoafrica.datasets.boundaries import _resolve_iso3, get_bbox
+
     iso3 = _resolve_iso3(country)
     bbox = get_bbox(country)
     api_key = _get_firms_key()
@@ -226,7 +228,9 @@ def summary(gdf: gpd.GeoDataFrame, by: str = "confidence") -> pd.DataFrame:
         gdf.groupby(by)
         .agg(
             count=("geometry", "count"),
-            avg_brightness=("bright_ti4", "mean") if "bright_ti4" in gdf.columns else ("geometry", "count"),
+            avg_brightness=("bright_ti4", "mean")
+            if "bright_ti4" in gdf.columns
+            else ("geometry", "count"),
             frp_sum=("frp", "sum") if "frp" in gdf.columns else ("geometry", "count"),
         )
         .reset_index()
@@ -236,6 +240,7 @@ def summary(gdf: gpd.GeoDataFrame, by: str = "confidence") -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
 
 def _get_firms_key() -> str:
     """Return the NASA FIRMS API key or raise a clear error."""
@@ -252,6 +257,7 @@ def _get_firms_key() -> str:
 def _parse_firms_csv(content: str, sensor: str = "") -> gpd.GeoDataFrame:
     """Parse FIRMS CSV text into a GeoDataFrame."""
     import io
+
     if not content.strip() or content.startswith("Sorry") or content.startswith("Error"):
         return gpd.GeoDataFrame(geometry=[], crs="EPSG:4326")
 

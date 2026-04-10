@@ -53,6 +53,7 @@ def info():
     """Show GeoAfrica SDK version, config, and API key status."""
     console.print(BANNER)
     from geoafrica.core.config import get_config
+
     cfg = get_config()
     cfg_info = cfg.info()
 
@@ -73,6 +74,7 @@ def info():
     key_table.add_column("Env Variable", style="dim")
 
     from geoafrica.core.config import ENV_KEYS
+
     for provider, env_var in ENV_KEYS.items():
         status = cfg_info["api_keys"].get(provider, "✗ not set")
         color = "green" if "✓" in status else "red"
@@ -96,11 +98,16 @@ def config():
 def config_set(key: str, value: str):
     """Set an API key or config value. Example: geoafrica config set GEOAFRICA_FIRMS_KEY abc123"""
     from geoafrica.core.config import ENV_KEYS, get_config
+
     cfg = get_config()
 
     # Find provider by env var name or partial match
     provider = next(
-        (p for p, env in ENV_KEYS.items() if env.upper() == key.upper() or p.upper() == key.upper()),
+        (
+            p
+            for p, env in ENV_KEYS.items()
+            if env.upper() == key.upper() or p.upper() == key.upper()
+        ),
         key.upper(),
     )
     cfg.set_api_key(provider, value, persist=True)
@@ -111,6 +118,7 @@ def config_set(key: str, value: str):
 def config_show():
     """Show current configuration file path and contents."""
     from geoafrica.core.config import _CONFIG_FILE
+
     console.print(f"Config file: [cyan]{_CONFIG_FILE}[/cyan]")
     if _CONFIG_FILE.exists():
         console.print(_CONFIG_FILE.read_text())
@@ -132,7 +140,10 @@ def boundaries(country: str, level: int, output: str | None, source: str):
     Example: geoafrica boundaries nigeria --level 1 --output states.geojson
     """
     from geoafrica.datasets.boundaries import get_admin
-    with console.status(f"[cyan]Fetching {country} level-{level} boundaries from {source}...[/cyan]"):
+
+    with console.status(
+        f"[cyan]Fetching {country} level-{level} boundaries from {source}...[/cyan]"
+    ):
         gdf = get_admin(country, level=level, source=source)
 
     console.print(f"[green]✓[/green] Retrieved [bold]{len(gdf)}[/bold] features.")
@@ -151,8 +162,13 @@ def osm():
 
 @osm.command("facilities")
 @click.option("--location", "-l", required=True, help="Location name (e.g. 'Lagos, Nigeria')")
-@click.option("--type", "ftype", default="hospital", show_default=True,
-              help="Facility type: hospital, school, clinic, bank, market, etc.")
+@click.option(
+    "--type",
+    "ftype",
+    default="hospital",
+    show_default=True,
+    help="Facility type: hospital, school, clinic, bank, market, etc.",
+)
 @click.option("--output", "-o", default=None)
 def osm_facilities(location: str, ftype: str, output: str | None):
     """Fetch facilities from OpenStreetMap.
@@ -160,11 +176,12 @@ def osm_facilities(location: str, ftype: str, output: str | None):
     Example: geoafrica osm facilities --location "Kenya" --type hospital
     """
     from geoafrica.datasets.osm import get_amenity
+
     with console.status(f"[cyan]Querying {ftype}s in {location}...[/cyan]"):
         gdf = get_amenity(location, amenity=ftype)
     console.print(f"[green]✓[/green] Found [bold]{len(gdf)}[/bold] {ftype}(s).")
     _print_gdf_preview(gdf)
-    _save_output(gdf, output, default_name=f"{ftype}_{location.replace(', ','_')}.geojson")
+    _save_output(gdf, output, default_name=f"{ftype}_{location.replace(', ', '_')}.geojson")
 
 
 @osm.command("roads")
@@ -174,10 +191,11 @@ def osm_facilities(location: str, ftype: str, output: str | None):
 def osm_roads(location: str, road_type: str | None, output: str | None):
     """Fetch road network from OpenStreetMap."""
     from geoafrica.datasets.osm import get_roads
+
     with console.status(f"[cyan]Fetching roads in {location}...[/cyan]"):
         gdf = get_roads(location, road_type=road_type)
     console.print(f"[green]✓[/green] Found [bold]{len(gdf)}[/bold] road segments.")
-    _save_output(gdf, output, default_name=f"roads_{location.replace(', ','_')}.geojson")
+    _save_output(gdf, output, default_name=f"roads_{location.replace(', ', '_')}.geojson")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -191,8 +209,7 @@ def fire():
 
 @fire.command("active")
 @click.option("--country", "-c", default=None, help="Country name or ISO code.")
-@click.option("--bbox", "-b", default=None,
-              help="Bounding box: 'min_lon,min_lat,max_lon,max_lat'")
+@click.option("--bbox", "-b", default=None, help="Bounding box: 'min_lon,min_lat,max_lon,max_lat'")
 @click.option("--days", "-d", default=7, show_default=True, type=int)
 @click.option("--sensor", default="VIIRS_SNPP", show_default=True)
 @click.option("--output", "-o", default=None)
@@ -202,6 +219,7 @@ def fire_active(country: str | None, bbox: str | None, days: int, sensor: str, o
     Example: geoafrica fire active --country Nigeria --days 3
     """
     from geoafrica.datasets import fire as fire_mod
+
     if country:
         with console.status(f"[cyan]Fetching fires in {country} (last {days} days)...[/cyan]"):
             gdf = fire_mod.get_country(country, days=days, sensor=sensor)
@@ -230,8 +248,13 @@ def elevation():
 
 @elevation.command("dem")
 @click.option("--country", "-c", required=True)
-@click.option("--source", "-s", default="SRTMGL1", show_default=True,
-              help="DEM source: SRTMGL1, COP30, AW3D30, NASADEM")
+@click.option(
+    "--source",
+    "-s",
+    default="SRTMGL1",
+    show_default=True,
+    help="DEM source: SRTMGL1, COP30, AW3D30, NASADEM",
+)
 @click.option("--output", "-o", default=None, help="Output .tif file path")
 def elevation_dem(country: str, source: str, output: str | None):
     """Download a DEM for a country.
@@ -239,6 +262,7 @@ def elevation_dem(country: str, source: str, output: str | None):
     Example: geoafrica elevation dem --country Rwanda --source COP30
     """
     from geoafrica.datasets.elevation import get_dem
+
     with console.status(f"[cyan]Downloading {source} DEM for {country}...[/cyan]"):
         da = get_dem(country, source=source)
     console.print(f"[green]✓[/green] Shape: {da.shape}, CRS: {da.rio.crs}")
@@ -251,6 +275,7 @@ def elevation_dem(country: str, source: str, output: str | None):
 def elevation_sources():
     """List available DEM data sources."""
     from geoafrica.datasets.elevation import list_sources
+
     df = list_sources()
     table = Table(title="Available DEM Sources")
     table.add_column("Code", style="cyan")
@@ -264,11 +289,13 @@ def elevation_sources():
 # geoafrica countries
 # ──────────────────────────────────────────────────────────────────────────────
 @main.command()
-@click.option("--region", "-r", default=None,
-              help="Filter by region: africa, americas, asia, europe")
+@click.option(
+    "--region", "-r", default=None, help="Filter by region: africa, americas, asia, europe"
+)
 def countries(region: str | None):
     """List supported countries."""
     from geoafrica.datasets.boundaries import list_countries
+
     df = list_countries(region=region)
     table = Table(title=f"Supported Countries{f' ({region.title()})' if region else ''}")
     table.add_column("Country", style="cyan")
@@ -283,6 +310,7 @@ def countries(region: str | None):
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ──────────────────────────────────────────────────────────────────────────────
+
 
 def _print_gdf_preview(gdf, n: int = 5):
     """Print a rich table preview of a GeoDataFrame."""
@@ -300,6 +328,7 @@ def _print_gdf_preview(gdf, n: int = 5):
 def _save_output(gdf, output: str | None, default_name: str):
     """Save GeoDataFrame to file based on extension."""
     from geoafrica.io.writers import to_csv, to_geojson, to_geopackage, to_shapefile
+
     if output is None:
         console.print("[dim]No output file specified. Use --output to save.[/dim]")
         return

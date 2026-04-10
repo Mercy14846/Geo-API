@@ -1,6 +1,7 @@
 """
 GeoAfrica Core Package
 """
+
 from geoafrica.core.config import GeoAfricaConfig, configure, get_config
 from geoafrica.core.exceptions import (
     APIKeyMissingError,

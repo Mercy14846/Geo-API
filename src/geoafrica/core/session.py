@@ -24,7 +24,7 @@ from geoafrica.core.config import get_config
 # Per-provider rate limits (requests per second)
 # -------------------------------------------------------------------
 RATE_LIMITS: dict[str, float] = {
-    "overpass-api.de": 0.5,   # 1 req / 2 sec
+    "overpass-api.de": 0.5,  # 1 req / 2 sec
     "api.humdata.org": 2.0,
     "worldpop.org": 2.0,
     "firms.modaps.eosdis.nasa.gov": 1.0,
@@ -54,6 +54,7 @@ def _rate_limit(host: str) -> None:
 # Session factory
 # -------------------------------------------------------------------
 
+
 def _build_session(use_cache: bool = True) -> requests.Session:
     """Build a requests.Session with retry logic and optional caching."""
     cfg = get_config()
@@ -79,10 +80,12 @@ def _build_session(use_cache: bool = True) -> requests.Session:
     session.mount("https://", adapter)
     session.mount("http://", adapter)
 
-    session.headers.update({
-        "User-Agent": "GeoAfrica-SDK/0.2.0 (Merczcord Technologies Ltd.; https://github.com/Mercy14846/Geo-API)",
-        "Accept": "application/json, application/geo+json, */*",
-    })
+    session.headers.update(
+        {
+            "User-Agent": "GeoAfrica-SDK/0.2.0 (Merczcord Technologies Ltd.; https://github.com/Mercy14846/Geo-API)",
+            "Accept": "application/json, application/geo+json, */*",
+        }
+    )
     return session
 
 

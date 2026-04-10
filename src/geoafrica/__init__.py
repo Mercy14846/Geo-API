@@ -76,25 +76,26 @@ from geoafrica.core.exceptions import (  # noqa: F401
 def __getattr__(name: str):
     """Lazy-load submodules on first access."""
     _lazy_modules = {
-        "boundaries":   "geoafrica.datasets.boundaries",
-        "population":   "geoafrica.datasets.population",
-        "osm":          "geoafrica.datasets.osm",
-        "satellite":    "geoafrica.datasets.satellite",
-        "climate":      "geoafrica.datasets.climate",
-        "health":       "geoafrica.datasets.health",
-        "fire":         "geoafrica.datasets.fire",
-        "elevation":    "geoafrica.datasets.elevation",
+        "boundaries": "geoafrica.datasets.boundaries",
+        "population": "geoafrica.datasets.population",
+        "osm": "geoafrica.datasets.osm",
+        "satellite": "geoafrica.datasets.satellite",
+        "climate": "geoafrica.datasets.climate",
+        "health": "geoafrica.datasets.health",
+        "fire": "geoafrica.datasets.fire",
+        "elevation": "geoafrica.datasets.elevation",
         "humanitarian": "geoafrica.datasets.humanitarian",
-        "roads":        "geoafrica.datasets.roads",
-        "viz":          "geoafrica.viz.maps",
-        "spatial":      "geoafrica.analysis.spatial",
-        "zonal_stats":  "geoafrica.analysis.zonal_stats",
-        "proximity":    "geoafrica.analysis.proximity",
-        "readers":      "geoafrica.io.readers",
-        "writers":      "geoafrica.io.writers",
+        "roads": "geoafrica.datasets.roads",
+        "viz": "geoafrica.viz.maps",
+        "spatial": "geoafrica.analysis.spatial",
+        "zonal_stats": "geoafrica.analysis.zonal_stats",
+        "proximity": "geoafrica.analysis.proximity",
+        "readers": "geoafrica.io.readers",
+        "writers": "geoafrica.io.writers",
     }
     if name in _lazy_modules:
         import importlib
+
         mod = importlib.import_module(_lazy_modules[name])
         globals()[name] = mod
         return mod

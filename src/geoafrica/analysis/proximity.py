@@ -19,10 +19,10 @@ Usage
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import geopandas as gpd
 import pandas as pd
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import xarray
@@ -88,7 +88,11 @@ def nearest_facility(
         row_data = dict(origins.loc[idx])
         for rank, (ni, dist) in enumerate(zip(nearest_indices, nearest_dists), start=1):
             suffix = "" if n == 1 else f"_{rank}"
-            row_data[f"nearest{suffix}_name"] = facilities.loc[ni, facility_label] if facility_label in facilities.columns else str(ni)
+            row_data[f"nearest{suffix}_name"] = (
+                facilities.loc[ni, facility_label]
+                if facility_label in facilities.columns
+                else str(ni)
+            )
             row_data[f"nearest{suffix}_distance_km"] = round(dist, 3)
 
         results.append(row_data)

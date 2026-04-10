@@ -36,10 +36,10 @@ Usage
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
 import pandas as pd
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import xarray
@@ -67,7 +67,7 @@ def get_dem(
     country: str,
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a Digital Elevation Model raster for a country.
 
@@ -92,12 +92,10 @@ def get_dem(
     >>> dem.plot(cmap="terrain")
     """
     if source not in DEM_SOURCES:
-        raise ValueError(
-            f"Unknown DEM source '{source}'. "
-            f"Available: {list(DEM_SOURCES)}"
-        )
+        raise ValueError(f"Unknown DEM source '{source}'. Available: {list(DEM_SOURCES)}")
 
     from geoafrica.datasets.boundaries import get_bbox
+
     bbox = get_bbox(country)
     return get_dem_bbox(bbox, source=source, output_format=output_format)
 
@@ -106,7 +104,7 @@ def get_dem_bbox(
     bbox: list[float],
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a DEM for a bounding box.
 
@@ -192,8 +190,10 @@ def terrain_profile(
     lats = np.linspace(start_lat, end_lat, num_points)
 
     bbox = [
-        min(lons) - 0.05, min(lats) - 0.05,
-        max(lons) + 0.05, max(lats) + 0.05,
+        min(lons) - 0.05,
+        min(lats) - 0.05,
+        max(lons) + 0.05,
+        max(lats) + 0.05,
     ]
     dem = get_dem_bbox(bbox, source=source)
 
@@ -209,23 +209,26 @@ def terrain_profile(
 
     # Compute cumulative distance in km
     from pyproj import Geod
+
     geod = Geod(ellps="WGS84")
     distances = [0.0]
     for i in range(1, num_points):
         _, _, dist = geod.inv(lons[i - 1], lats[i - 1], lons[i], lats[i])
         distances.append(distances[-1] + dist / 1000)
 
-    return pd.DataFrame({
-        "distance_km": distances,
-        "elevation_m": elevations,
-        "lon": lons,
-        "lat": lats,
-    })
+    return pd.DataFrame(
+        {
+            "distance_km": distances,
+            "elevation_m": elevations,
+            "lon": lons,
+            "lat": lats,
+        }
+    )
 
 
 def compute_slope_aspect(
-    dem: "xarray.DataArray",
-) -> "tuple[xarray.DataArray, xarray.DataArray]":
+    dem: xarray.DataArray,
+) -> tuple[xarray.DataArray, xarray.DataArray]:
     """
     Compute slope (degrees) and aspect (degrees from north) from a DEM.
 
@@ -253,7 +256,7 @@ def compute_slope_aspect(
     dz_dx = np.gradient(data, axis=1) / dx
     dz_dy = np.gradient(data, axis=0) / dy
 
-    slope_rad = np.arctan(np.sqrt(dz_dx ** 2 + dz_dy ** 2))
+    slope_rad = np.arctan(np.sqrt(dz_dx**2 + dz_dy**2))
     aspect_rad = np.arctan2(-dz_dx, dz_dy)
 
     slope_deg = np.degrees(slope_rad)
@@ -279,6 +282,7 @@ def list_sources() -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
 
 def _build_opentopo_url(
     bbox: list[float],

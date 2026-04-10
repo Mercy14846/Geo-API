@@ -173,6 +173,7 @@ def within_distance(
     GeoDataFrame of features within the radius (with 'distance_km' column).
     """
     from shapely.geometry import Point
+
     gdf_proj = gdf.to_crs(epsg=6933)
     ref_proj = gpd.GeoDataFrame(
         geometry=gpd.points_from_xy([point_lon], [point_lat]),
@@ -182,9 +183,7 @@ def within_distance(
     ref_x = ref_proj.geometry.x.iloc[0]
     ref_y = ref_proj.geometry.y.iloc[0]
 
-    distances = gdf_proj.geometry.apply(
-        lambda g: g.centroid.distance(Point(ref_x, ref_y)) / 1000
-    )
+    distances = gdf_proj.geometry.apply(lambda g: g.centroid.distance(Point(ref_x, ref_y)) / 1000)
     mask = distances <= km
     result = gdf[mask].copy()
     result["distance_km"] = distances[mask].values
@@ -211,7 +210,5 @@ def simplify(
     original_crs = gdf.crs
     gdf_proj = gdf.to_crs(epsg=6933)
     gdf_proj = gdf_proj.copy()
-    gdf_proj.geometry = gdf_proj.geometry.simplify(
-        tolerance_km * 1000, preserve_topology=True
-    )
+    gdf_proj.geometry = gdf_proj.geometry.simplify(tolerance_km * 1000, preserve_topology=True)
     return gdf_proj.to_crs(original_crs)

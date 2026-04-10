@@ -94,6 +94,7 @@ class GeoAfricaConfig:
     def require_api_key(self, provider: str) -> str:
         """Return the API key or raise APIKeyMissingError."""
         from geoafrica.core.exceptions import APIKeyMissingError
+
         key = self.get_api_key(provider)
         if not key:
             env_var = ENV_KEYS.get(provider.upper(), f"GEOAFRICA_{provider.upper()}_KEY")
@@ -120,10 +121,7 @@ class GeoAfricaConfig:
 
     def info(self) -> dict:
         """Return current configuration as a dict (keys redacted)."""
-        configured = {
-            p: "✓ set" if self.get_api_key(p) else "✗ not set"
-            for p in ENV_KEYS
-        }
+        configured = {p: "✓ set" if self.get_api_key(p) else "✗ not set" for p in ENV_KEYS}
         return {
             "cache_dir": str(self.cache_dir),
             "cache_ttl_seconds": self.cache_ttl,

@@ -1,4 +1,5 @@
 """GeoAfrica Datasets Package"""
+
 from geoafrica.datasets import (
     boundaries,
     climate,
@@ -13,7 +14,14 @@ from geoafrica.datasets import (
 )
 
 __all__ = [
-    "boundaries", "population", "osm", "satellite",
-    "climate", "health", "fire", "elevation",
-    "humanitarian", "roads",
+    "boundaries",
+    "population",
+    "osm",
+    "satellite",
+    "climate",
+    "health",
+    "fire",
+    "elevation",
+    "humanitarian",
+    "roads",
 ]

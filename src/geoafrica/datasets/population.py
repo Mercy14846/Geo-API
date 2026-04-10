@@ -86,6 +86,7 @@ def get_grid(
         ) from e
 
     from geoafrica.datasets.boundaries import _resolve_iso3
+
     iso3 = _resolve_iso3(country)
     iso3.lower()
 
@@ -181,16 +182,20 @@ def get_stats(
     area_km2 = float(admin_proj.geometry.area.sum() / 1e6)
     density = total_pop / area_km2 if area_km2 > 0 else float("nan")
 
-    return pd.DataFrame([{
-        "admin_name": admin_name,
-        "country": country,
-        "admin_level": level,
-        "year": year,
-        "population": round(total_pop),
-        "area_km2": round(area_km2, 2),
-        "density_per_km2": round(density, 2),
-        "source": "WorldPop UN-adjusted",
-    }])
+    return pd.DataFrame(
+        [
+            {
+                "admin_name": admin_name,
+                "country": country,
+                "admin_level": level,
+                "year": year,
+                "population": round(total_pop),
+                "area_km2": round(area_km2, 2),
+                "density_per_km2": round(density, 2),
+                "source": "WorldPop UN-adjusted",
+            }
+        ]
+    )
 
 
 def available_years(country: str) -> list[int]:
@@ -202,6 +207,7 @@ def available_years(country: str) -> list[int]:
     list[int]
     """
     from geoafrica.datasets.boundaries import _resolve_iso3
+
     iso3 = _resolve_iso3(country)
 
     with GeoAfricaSession() as s:
@@ -222,6 +228,7 @@ def available_years(country: str) -> list[int]:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
 
 def _build_worldpop_url(
     iso3: str,

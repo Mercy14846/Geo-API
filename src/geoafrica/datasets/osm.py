@@ -65,7 +65,16 @@ AMENITY_PRESETS = {
     "atm": {"amenity": "atm"},
 }
 
-ROAD_TYPES = ["motorway", "trunk", "primary", "secondary", "tertiary", "residential", "track", "path"]
+ROAD_TYPES = [
+    "motorway",
+    "trunk",
+    "primary",
+    "secondary",
+    "tertiary",
+    "residential",
+    "track",
+    "path",
+]
 
 
 def get_features(
@@ -202,10 +211,7 @@ def get_amenity(
     >>> schools = osm.get_amenity("Ghana", amenity="school")
     """
     if amenity not in AMENITY_PRESETS:
-        raise ValueError(
-            f"Unknown amenity '{amenity}'. "
-            f"Available presets: {list(AMENITY_PRESETS)}"
-        )
+        raise ValueError(f"Unknown amenity '{amenity}'. Available presets: {list(AMENITY_PRESETS)}")
     tags = AMENITY_PRESETS[amenity]
     return get_features(location, tags=tags, timeout=timeout)
 
@@ -237,6 +243,7 @@ def get_buildings(
 # Overpass query builder
 # ---------------------------------------------------------------------------
 
+
 def _build_overpass_query(
     bbox: str,
     tags: dict[str, str | list[str]],
@@ -254,16 +261,10 @@ def _build_overpass_query(
                 tag_filters += f'["{key}"~"^({values_str})$"]'
             else:
                 tag_filters += f'["{key}"="{value}"]'
-        union_blocks.append(f'{geom_type}{tag_filters}({bbox});')
+        union_blocks.append(f"{geom_type}{tag_filters}({bbox});")
 
     union = "\n  ".join(union_blocks)
-    return (
-        f"[out:json][timeout:{timeout}];\n"
-        f"(\n  {union}\n);\n"
-        f"out body;\n"
-        f">;\n"
-        f"out skel qt;"
-    )
+    return f"[out:json][timeout:{timeout}];\n(\n  {union}\n);\nout body;\n>;\nout skel qt;"
 
 
 def _run_overpass_query(query: str) -> dict:
@@ -278,9 +279,7 @@ def _run_overpass_query(query: str) -> dict:
             last_err = e
             continue
 
-    raise RuntimeError(
-        f"All Overpass API endpoints failed. Last error: {last_err}"
-    )
+    raise RuntimeError(f"All Overpass API endpoints failed. Last error: {last_err}")
 
 
 def _parse_overpass_response(data: dict) -> gpd.GeoDataFrame:
@@ -372,8 +371,7 @@ def _geocode_to_bbox(location: str) -> list[float]:
 
     if not results:
         raise DataNotFoundError(
-            f"Could not geocode '{location}'. "
-            "Try a more specific location name.",
+            f"Could not geocode '{location}'. Try a more specific location name.",
             query=location,
         )
 

@@ -116,27 +116,27 @@ def search(
     try:
         import pystac_client
     except ImportError:
-        raise ImportError(
-            "Install satellite dependencies: pip install \"geoafrica[satellite]\""
-        )
+        raise ImportError('Install satellite dependencies: pip install "geoafrica[satellite]"')
 
     if country and bbox is None:
         from geoafrica.datasets.boundaries import get_bbox
+
         bbox = get_bbox(country)
 
     if location and bbox is None:
         import geopandas as gpd
+
         # Geocode the location directly using Nominatim (requires network)
         gdf = gpd.tools.geocode(location, provider="nominatim", user_agent="geoafrica_sdk")
         if gdf.empty or gdf["geometry"].iloc[0] is None:
             raise ValueError(f"Could not find coordinates for location: '{location}'")
-        bounds = gdf.total_bounds # [minx, miny, maxx, maxy]
+        bounds = gdf.total_bounds  # [minx, miny, maxx, maxy]
 
         # If it's a single point rather than a region, buffer it slightly
         # so STAC catches intersecting images
         if bounds[0] == bounds[2] and bounds[1] == bounds[3]:
             # ~10km buffer roughly (0.1 degrees)
-            bbox = [bounds[0]-0.1, bounds[1]-0.1, bounds[2]+0.1, bounds[3]+0.1]
+            bbox = [bounds[0] - 0.1, bounds[1] - 0.1, bounds[2] + 0.1, bounds[3] + 0.1]
         else:
             bbox = list(bounds)
 
@@ -236,12 +236,14 @@ def list_collections(catalog: str = "earth_search") -> pd.DataFrame:
     collections = list(client.get_collections())
     records = []
     for col in collections:
-        records.append({
-            "id": col.id,
-            "title": col.title or "",
-            "description": (col.description or "")[:120],
-            "catalog": catalog,
-        })
+        records.append(
+            {
+                "id": col.id,
+                "title": col.title or "",
+                "description": (col.description or "")[:120],
+                "catalog": catalog,
+            }
+        )
     return pd.DataFrame(records).sort_values("id").reset_index(drop=True)
 
 
