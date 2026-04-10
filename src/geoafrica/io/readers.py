@@ -12,6 +12,11 @@ from pathlib import Path
 
 import geopandas as gpd
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 SUPPORTED_VECTOR_FORMATS = [".geojson", ".json", ".shp", ".gpkg", ".kml", ".fgb", ".parquet"]
 SUPPORTED_RASTER_FORMATS = [".tif", ".tiff", ".nc", ".nc4", ".hdf", ".h5"]
 
@@ -20,7 +25,7 @@ def read(
     path_or_url: str | Path,
     layer: str | None = None,
     crs: str = "EPSG:4326",
-) -> gpd.GeoDataFrame | xarray.DataArray:
+) -> "gpd.GeoDataFrame | xarray.DataArray":
     """
     Universal reader — loads vector or raster data from a local path or URL.
 
@@ -74,7 +79,7 @@ def _read_vector(path: str, layer: str | None, crs: str) -> gpd.GeoDataFrame:
     return gdf.to_crs(crs)
 
 
-def _read_raster(path: str) -> xarray.DataArray:
+def _read_raster(path: str) -> "xarray.DataArray":
     try:
         import rioxarray  # noqa: F401
         import xarray as xr
