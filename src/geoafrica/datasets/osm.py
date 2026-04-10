@@ -32,6 +32,8 @@ Usage
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
+from typing import Any
 
 import geopandas as gpd
 from shapely.geometry import LineString, Point, Polygon
@@ -79,8 +81,8 @@ ROAD_TYPES = [
 
 def get_features(
     location: str,
-    tags: dict[str, str | list[str]],
-    geometry_types: list[str] = ("node", "way", "relation"),
+    tags: Mapping[str, str | list[str]],
+    geometry_types: tuple[str, ...] | list[str] = ("node", "way", "relation"),
     timeout: int = 120,
 ) -> gpd.GeoDataFrame:
     """
@@ -115,8 +117,8 @@ def get_features(
 
 def get_features_bbox(
     bbox: list[float],
-    tags: dict[str, str | list[str]],
-    geometry_types: list[str] = ("node", "way", "relation"),
+    tags: Mapping[str, str | list[str]],
+    geometry_types: tuple[str, ...] | list[str] = ("node", "way", "relation"),
     timeout: int = 120,
 ) -> gpd.GeoDataFrame:
     """
@@ -246,8 +248,8 @@ def get_buildings(
 
 def _build_overpass_query(
     bbox: str,
-    tags: dict[str, str | list[str]],
-    geometry_types: list[str],
+    tags: Mapping[str, str | list[str]],
+    geometry_types: tuple[str, ...] | list[str],
     timeout: int,
 ) -> str:
     """Build an Overpass QL query string."""
@@ -267,7 +269,7 @@ def _build_overpass_query(
     return f"[out:json][timeout:{timeout}];\n(\n  {union}\n);\nout body;\n>;\nout skel qt;"
 
 
-def _run_overpass_query(query: str) -> dict:
+def _run_overpass_query(query: str) -> dict[str, Any]:
     """Execute an Overpass QL query, trying multiple endpoints."""
     last_err: Exception | None = None
     for endpoint in _OVERPASS_ENDPOINTS:
