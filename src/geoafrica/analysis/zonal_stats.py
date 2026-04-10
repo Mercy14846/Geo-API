@@ -22,6 +22,11 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 VALID_STATS = ["mean", "sum", "min", "max", "std", "count", "median", "range"]
 
 
