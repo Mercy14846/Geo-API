@@ -148,10 +148,16 @@ africa_only = boundaries.list_countries(region="Africa")
 
 ```python
 from geoafrica import population
+import matplotlib.pyplot as plt
 
 # 1km population grid (WorldPop)
 pop_grid = population.get_grid("Nigeria", year=2020, resolution=1000)
 print(f"Total pop: {int(pop_grid.where(pop_grid > 0).sum().values):,}")
+
+# View the population density raster
+pop_grid.plot(cmap="hot", figsize=(7, 7))
+plt.title("Nigeria - Population Density")
+plt.show()
 
 # Admin-level statistics
 stats = population.get_stats("Lagos", country="Nigeria", level=1)
@@ -164,10 +170,17 @@ years = population.available_years("Ghana")
 ### OpenStreetMap Features
 
 ```python
-from geoafrica import osm
+from geoafrica import osm, viz
+import matplotlib.pyplot as plt
 
 # Hospitals in Lagos
 hospitals = osm.get_amenity("Lagos, Nigeria", amenity="hospital")
+
+# Print top 5 results
+print(hospitals[['name', 'amenity', 'geometry']].head())
+
+# View interactively (in Jupyter)
+# viz.quick_map(hospitals, color="blue")
 
 # Schools across Ghana
 schools = osm.get_amenity("Ghana", amenity="school")
@@ -195,9 +208,15 @@ markets = osm.get_features_bbox(
 
 ```python
 from geoafrica import climate
+import matplotlib.pyplot as plt
 
 # Annual rainfall for Ethiopia
 rain_2023 = climate.get_rainfall("Ethiopia", year=2023)
+
+# View the climate raster
+rain_2023.plot(cmap="Blues", figsize=(8, 6))
+plt.title("Ethiopia - 2023 Rainfall (mm)")
+plt.show()
 
 # Monthly rainfall (July 2022)
 rain_july = climate.get_rainfall("Nigeria", year=2022, month=7)
@@ -213,10 +232,20 @@ anomaly = climate.rainfall_anomaly("Senegal", year=2022)
 ### Active Fires (NASA FIRMS)
 
 ```python
-from geoafrica import fire
+from geoafrica import fire, viz
+import matplotlib.pyplot as plt
 
 # Active fires in Nigeria (last 7 days)
 fires = fire.get_country("Nigeria", days=7)
+print(f"Total active fires: {len(fires)}")
+
+# Plot static map
+fires.plot(color='red', markersize=5, figsize=(6,6))
+plt.title("Active Fires (Last 7 Days)")
+plt.show()
+
+# View interactive Heatmap
+# heatmap = viz.fire_map(fires, country="Nigeria")
 
 # Fires in West Africa bounding box
 west_africa = fire.get_active(bbox=[-18, 4, 16, 20], days=3)
@@ -236,9 +265,15 @@ summary = fire.summary(fires, by="acq_date")
 
 ```python
 from geoafrica import elevation
+import matplotlib.pyplot as plt
 
 # SRTM 30m DEM for Rwanda
 dem = elevation.get_dem("Rwanda", source="SRTMGL1")
+
+# Visualize terrain raster
+dem.plot(cmap="terrain", figsize=(8, 8))
+plt.title("Rwanda - Digital Elevation Model")
+plt.show()
 
 # Copernicus 30m DEM
 dem_cop = elevation.get_dem("Kenya", source="COP30")
@@ -261,10 +296,14 @@ elevation.list_sources()
 ### Health Facilities
 
 ```python
-from geoafrica import health
+from geoafrica import health, viz
 
 # All hospitals in Nigeria
 hospitals = health.get_facilities("Nigeria", facility_type="hospital")
+print(hospitals[['name', 'facility_type']].head())
+
+# Interactively view hospital locations
+# map_hospitals = viz.quick_map(hospitals, color="red")
 
 # Clinics in Ghana
 clinics = health.get_facilities("Ghana", facility_type="clinic")
@@ -316,7 +355,13 @@ print(f"Found {len(items)} scenes")
 deafrica_cols = satellite.deafrica_products()
 
 # Load RGB composite
+import matplotlib.pyplot as plt
 rgb = satellite.load_rgb(items[0])
+
+# Plot the RGB composite satellite image
+rgb.plot.imshow(figsize=(8, 8))
+plt.title("Sentinel-2 RGB Composite")
+plt.show()
 ```
 
 ### Analysis Tools
