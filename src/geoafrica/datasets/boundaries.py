@@ -39,7 +39,7 @@ from pathlib import Path
 
 import geopandas as gpd
 import pandas as pd
-import requests
+import requests  # type: ignore[import-untyped]
 
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError

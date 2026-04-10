@@ -13,9 +13,9 @@ import threading
 import time
 from typing import Any
 
-import requests
-import requests_cache
-from requests.adapters import HTTPAdapter
+import requests  # type: ignore[import-untyped]
+import requests_cache  # type: ignore[import-untyped]
+from requests.adapters import HTTPAdapter  # type: ignore[import-untyped]
 from urllib3.util.retry import Retry
 
 from geoafrica.core.config import get_config
