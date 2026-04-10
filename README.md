@@ -108,24 +108,38 @@ geoafrica.configure(nasa_firms_key="your_key_here")
 ### Administrative Boundaries
 
 ```python
-from geoafrica import boundaries
+import matplotlib.pyplot as plt
+from geoafrica import boundaries, viz
 
-# Country outline
+# 1. Get Country Outline
 nigeria = boundaries.get_country("Nigeria")
 
-# States / provinces
+# Print the first few rows
+print("--- NIGERIA BOUNDARY DATA ---")
+print(nigeria.head())
+
+# Static Plot (Matplotlib)
+nigeria.plot(color='lightgreen', edgecolor='black', figsize=(6, 6))
+plt.title("Nigeria - Country Outline")
+plt.show()
+
+# 2. Get States / Provinces
 states = boundaries.get_admin("Nigeria", level=1)
+print(f"\nTotal states found: {len(states)}")
 
-# Districts
+# 3. Interactive Web Maps (Folium)
+# Generate a pan/zoomable interactive map
+interactive_map = viz.quick_map(states)
+# interactive_map.save("states_map.html")
+# In Jupyter/Colab, simply place 'interactive_map' on the last line to view inline:
+# interactive_map
+
+# 4. Districts & Bounding Boxes
 districts = boundaries.get_admin("Kenya", level=2)
-
-# By ISO code
 ghana = boundaries.get_by_iso("GH", level=1)
-
-# Bounding box
 bbox = boundaries.get_bbox("Ethiopia")  # [33.0, 3.4, 47.9, 14.9]
 
-# List all supported countries
+# 5. List supported countries
 all_countries = boundaries.list_countries()
 africa_only = boundaries.list_countries(region="Africa")
 ```
