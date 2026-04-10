@@ -32,6 +32,8 @@ from __future__ import annotations
 
 import math
 
+from typing import Any
+
 import geopandas as gpd
 import pandas as pd
 
@@ -240,8 +242,8 @@ def _fetch_healthsites(
     if facility_type:
         params["facility_type"] = facility_type
 
-    all_records = []
-    url = _HEALTHSITES_API
+    all_records: list[dict[str, Any]] = []
+    url: str | None = _HEALTHSITES_API
 
     with GeoAfricaSession() as s:
         while url:

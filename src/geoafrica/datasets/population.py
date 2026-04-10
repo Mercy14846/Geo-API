@@ -259,7 +259,7 @@ def _build_worldpop_url(
         for file_info in item.get("files", []):
             file_url = file_info.get("url", "")
             if res_str in file_url and file_url.endswith(".tif"):
-                return file_url
+                return str(file_url)
 
     # Fallback: construct direct URL pattern
     iso3_lower = iso3.lower()
