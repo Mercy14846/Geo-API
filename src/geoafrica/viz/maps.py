@@ -23,9 +23,9 @@ Usage
 
 from __future__ import annotations
 
-import geopandas as gpd
-
 from typing import TYPE_CHECKING
+
+import geopandas as gpd
 
 if TYPE_CHECKING:
     import folium
@@ -39,7 +39,7 @@ def quick_map(
     tooltip_cols: list[str] | None = None,
     zoom_start: int = 6,
     title: str | None = None,
-) -> "folium.Map":
+) -> folium.Map:
     """
     Create an interactive Leaflet map from a GeoDataFrame.
 
@@ -120,7 +120,7 @@ def quick_map(
     else:
         gdf_wgs = gdf.to_crs("EPSG:4326") if gdf.crs != "EPSG:4326" else gdf
         tooltip = (
-            folium.GeoJsonTooltip(fields=tooltip_cols, aliases=tooltip_cols) 
+            folium.GeoJsonTooltip(fields=tooltip_cols, aliases=tooltip_cols)
             if tooltip_cols else None
         )
 
@@ -148,7 +148,7 @@ def choropleth(
     bins: int = 7,
     tooltip_cols: list[str] | None = None,
     legend_name: str | None = None,
-) -> "folium.Map":
+) -> folium.Map:
     """
     Create a choropleth map colouring polygons by a numeric column.
 
@@ -235,13 +235,13 @@ def choropleth(
 
 
 def add_layer(
-    m: "folium.Map",
+    m: folium.Map,
     gdf: gpd.GeoDataFrame,
     name: str = "Layer",
     color: str = "#E91E63",
     opacity: float = 0.7,
     tooltip_cols: list[str] | None = None,
-) -> "folium.Map":
+) -> folium.Map:
     """
     Add an additional GeoDataFrame layer to an existing Folium map.
 
@@ -312,7 +312,7 @@ def fire_map(
     fire_gdf: gpd.GeoDataFrame,
     country: str | None = None,
     title: str = "Active Fire Detections",
-) -> "folium.Map":
+) -> folium.Map:
     """
     Specialised fire detection map with heat-map style rendering.
 
@@ -362,7 +362,7 @@ def fire_map(
 # Internal helpers
 # ---------------------------------------------------------------------------
 
-def _add_branding(m: "folium.Map", title: str | None = None) -> None:
+def _add_branding(m: folium.Map, title: str | None = None) -> None:
     """Add a Merczcord Technologies branding panel to the map."""
     try:
         import folium

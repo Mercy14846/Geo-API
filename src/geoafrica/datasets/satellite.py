@@ -34,11 +34,11 @@ Usage
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pandas as pd
 
 from geoafrica.core.exceptions import DataNotFoundError
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import pystac
@@ -75,7 +75,7 @@ def search(
     max_cloud_cover: int = 20,
     limit: int = 10,
     catalog: str | None = None,
-) -> "pystac.ItemCollection":
+) -> pystac.ItemCollection:
     """
     Search STAC catalogs for satellite imagery.
 
@@ -132,7 +132,7 @@ def search(
             raise ValueError(f"Could not find coordinates for location: '{location}'")
         bounds = gdf.total_bounds # [minx, miny, maxx, maxy]
 
-        # If it's a single point rather than a region, buffer it slightly 
+        # If it's a single point rather than a region, buffer it slightly
         # so STAC catches intersecting images
         if bounds[0] == bounds[2] and bounds[1] == bounds[3]:
             # ~10km buffer roughly (0.1 degrees)
@@ -172,9 +172,9 @@ def search(
 
 
 def load_rgb(
-    item: "pystac.Item",
+    item: pystac.Item,
     resolution: int = 10,
-) -> "xarray.Dataset":
+) -> xarray.Dataset:
     """
     Load an RGB (true colour) composite from a STAC item.
 

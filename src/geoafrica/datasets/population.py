@@ -26,13 +26,13 @@ Usage
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pandas as pd
 
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import DataNotFoundError
 from geoafrica.core.session import GeoAfricaSession
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     import xarray
@@ -50,7 +50,7 @@ def get_grid(
     year: int = 2020,
     resolution: int = 1000,
     constrained: bool = False,
-) -> "xarray.DataArray":
+) -> xarray.DataArray:
     """
     Download a WorldPop population grid raster for a country.
 
