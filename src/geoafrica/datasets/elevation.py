@@ -39,6 +39,11 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 from geoafrica.core.config import get_config
 from geoafrica.core.exceptions import InvalidBoundingBoxError
 from geoafrica.core.session import GeoAfricaSession
@@ -62,7 +67,7 @@ def get_dem(
     country: str,
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Download a Digital Elevation Model raster for a country.
 
@@ -101,7 +106,7 @@ def get_dem_bbox(
     bbox: list[float],
     source: str = "SRTMGL1",
     output_format: str = "GTiff",
-) -> xarray.DataArray:
+) -> "xarray.DataArray":
     """
     Download a DEM for a bounding box.
 
@@ -219,8 +224,8 @@ def terrain_profile(
 
 
 def compute_slope_aspect(
-    dem: xarray.DataArray,
-) -> tuple[xarray.DataArray, xarray.DataArray]:
+    dem: "xarray.DataArray",
+) -> "tuple[xarray.DataArray, xarray.DataArray]":
     """
     Compute slope (degrees) and aspect (degrees from north) from a DEM.
 
