@@ -276,7 +276,7 @@ def _run_overpass_query(query: str) -> dict[str, Any]:
         try:
             with GeoAfricaSession() as s:
                 resp = s.post(endpoint, data={"data": query})
-                return resp.json()
+                return resp.json()  # type: ignore[no-any-return]
         except Exception as e:
             last_err = e
             continue
