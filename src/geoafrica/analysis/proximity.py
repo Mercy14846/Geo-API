@@ -22,6 +22,11 @@ from __future__ import annotations
 import geopandas as gpd
 import pandas as pd
 
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import xarray
+
 
 def nearest_facility(
     origins: gpd.GeoDataFrame,
